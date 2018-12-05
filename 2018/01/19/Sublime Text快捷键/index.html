@@ -1,0 +1,828 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="王洋" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="Sublime快捷键插入在下一行插入新行。即使光标不在行尾，也能快速向下插入一行Ctrl+Enter 在上一行插入新行。即使光标不在行首，也能快速向上插入一行Ctrl+Shift+Enter 复制光标所在整行，插入到下一行。即先将光标所在行复制，然后再插入到光标所在的下一行Ctrl+Shift+D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sublime快捷键">
+<meta property="og:url" content="http://blog.hackyang.cn/2018/01/19/Sublime Text快捷键/index.html">
+<meta property="og:site_name" content="王洋">
+<meta property="og:description" content="Sublime快捷键插入在下一行插入新行。即使光标不在行尾，也能快速向下插入一行Ctrl+Enter 在上一行插入新行。即使光标不在行首，也能快速向上插入一行Ctrl+Shift+Enter 复制光标所在整行，插入到下一行。即先将光标所在行复制，然后再插入到光标所在的下一行Ctrl+Shift+D">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-05T01:15:48.265Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sublime快捷键">
+<meta name="twitter:description" content="Sublime快捷键插入在下一行插入新行。即使光标不在行尾，也能快速向下插入一行Ctrl+Enter 在上一行插入新行。即使光标不在行首，也能快速向上插入一行Ctrl+Shift+Enter 复制光标所在整行，插入到下一行。即先将光标所在行复制，然后再插入到光标所在的下一行Ctrl+Shift+D">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6321919226709804000,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://blog.hackyang.cn/2018/01/19/Sublime Text快捷键/">
+
+  <title> Sublime快捷键 | 王洋 </title>
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">王洋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Kitkat</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Sublime快捷键
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-01-19T20:00:22+08:00" content="2018-01-19">
+              2018-01-19
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2018/01/19/Sublime Text快捷键/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/19/Sublime Text快捷键/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2018/01/19/Sublime Text快捷键/" class="leancloud_visitors" data-flag-title="Sublime快捷键">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="Sublime快捷键"><a href="#Sublime快捷键" class="headerlink" title="Sublime快捷键"></a>Sublime快捷键</h4><h5 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h5><h6 id="在下一行插入新行。即使光标不在行尾，也能快速向下插入一行"><a href="#在下一行插入新行。即使光标不在行尾，也能快速向下插入一行" class="headerlink" title="在下一行插入新行。即使光标不在行尾，也能快速向下插入一行"></a>在下一行插入新行。即使光标不在行尾，也能快速向下插入一行</h6><p><code>Ctrl+Enter</code></p>
+<h6 id="在上一行插入新行。即使光标不在行首，也能快速向上插入一行"><a href="#在上一行插入新行。即使光标不在行首，也能快速向上插入一行" class="headerlink" title="在上一行插入新行。即使光标不在行首，也能快速向上插入一行"></a>在上一行插入新行。即使光标不在行首，也能快速向上插入一行</h6><p><code>Ctrl+Shift+Enter</code></p>
+<h6 id="复制光标所在整行，插入到下一行。即先将光标所在行复制，然后再插入到光标所在的下一行"><a href="#复制光标所在整行，插入到下一行。即先将光标所在行复制，然后再插入到光标所在的下一行" class="headerlink" title="复制光标所在整行，插入到下一行。即先将光标所在行复制，然后再插入到光标所在的下一行"></a>复制光标所在整行，插入到下一行。即先将光标所在行复制，然后再插入到光标所在的下一行</h6><p><code>Ctrl+Shift+D</code><br><a id="more"></a></p>
+<h5 id="编辑"><a href="#编辑" class="headerlink" title="编辑"></a>编辑</h5><h6 id="合并选中的多行代码为一行。例如：将多行格式的CSS属性合并为一行。"><a href="#合并选中的多行代码为一行。例如：将多行格式的CSS属性合并为一行。" class="headerlink" title="合并选中的多行代码为一行。例如：将多行格式的CSS属性合并为一行。"></a>合并选中的多行代码为一行。例如：将多行格式的CSS属性合并为一行。</h6><p><code>Ctrl+J</code></p>
+<h6 id="粘贴并保持缩进"><a href="#粘贴并保持缩进" class="headerlink" title="粘贴并保持缩进"></a>粘贴并保持缩进</h6><p><code>Ctrl+Shift+V</code></p>
+<h6 id="使用标签包裹一行，Web开发利器"><a href="#使用标签包裹一行，Web开发利器" class="headerlink" title="使用标签包裹一行，Web开发利器"></a>使用标签包裹一行，Web开发利器</h6><p><code>Alt+Shift+W</code></p>
+<h6 id="移除与光标所在位置相关的父标签。对清除标记很有帮助。"><a href="#移除与光标所在位置相关的父标签。对清除标记很有帮助。" class="headerlink" title="移除与光标所在位置相关的父标签。对清除标记很有帮助。"></a>移除与光标所在位置相关的父标签。对清除标记很有帮助。</h6><p><code>Ctrl+Shift+;</code></p>
+<h6 id="按Ctrl，依次点击或选取，可需要编辑的多个位置"><a href="#按Ctrl，依次点击或选取，可需要编辑的多个位置" class="headerlink" title="按Ctrl，依次点击或选取，可需要编辑的多个位置"></a>按Ctrl，依次点击或选取，可需要编辑的多个位置</h6><p><code>Ctrl + 左键点击</code></p>
+<h6 id="Esc-退出光标多行选择，退出搜索框，命令框等"><a href="#Esc-退出光标多行选择，退出搜索框，命令框等" class="headerlink" title="Esc 退出光标多行选择，退出搜索框，命令框等"></a>Esc 退出光标多行选择，退出搜索框，命令框等</h6><p><code>Ctrl+T 左右字母互换</code></p>
+<h6 id="开启-关闭侧边栏"><a href="#开启-关闭侧边栏" class="headerlink" title="开启/关闭侧边栏"></a>开启/关闭侧边栏</h6><p><code>Ctrl+K+B</code></p>
+<h5 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h5><h6 id="选中光标所占的文本，继续操作则会选中下一个相同的文本"><a href="#选中光标所占的文本，继续操作则会选中下一个相同的文本" class="headerlink" title="选中光标所占的文本，继续操作则会选中下一个相同的文本"></a>选中光标所占的文本，继续操作则会选中下一个相同的文本</h6><p><code>Ctrl+D</code></p>
+<h6 id="选中文本按下快捷键，即可一次性选择全部的相同文本进行同时编辑。例如：快速选中并更改所有相同的变量名、函数名等。"><a href="#选中文本按下快捷键，即可一次性选择全部的相同文本进行同时编辑。例如：快速选中并更改所有相同的变量名、函数名等。" class="headerlink" title="选中文本按下快捷键，即可一次性选择全部的相同文本进行同时编辑。例如：快速选中并更改所有相同的变量名、函数名等。"></a>选中文本按下快捷键，即可一次性选择全部的相同文本进行同时编辑。例如：快速选中并更改所有相同的变量名、函数名等。</h6><p><code>Alt+F3</code></p>
+<h6 id="选中整行，继续操作则继续选择下一行，效果和-Shift-↓-效果一样。"><a href="#选中整行，继续操作则继续选择下一行，效果和-Shift-↓-效果一样。" class="headerlink" title="选中整行，继续操作则继续选择下一行，效果和 Shift+↓ 效果一样。"></a>选中整行，继续操作则继续选择下一行，效果和 Shift+↓ 效果一样。</h6><p><code>Ctrl+L</code></p>
+<h6 id="先选中多行，再按下快捷键，会在每行行尾插入光标，即可同时编辑这些行。"><a href="#先选中多行，再按下快捷键，会在每行行尾插入光标，即可同时编辑这些行。" class="headerlink" title="先选中多行，再按下快捷键，会在每行行尾插入光标，即可同时编辑这些行。"></a>先选中多行，再按下快捷键，会在每行行尾插入光标，即可同时编辑这些行。</h6><p><code>Ctrl+Shift+L</code></p>
+<h6 id="选择括号内的内容（继续选择父括号）。例如：快速选中删除函数中的代码，重写函数体代码或重写括号内里的内容。"><a href="#选择括号内的内容（继续选择父括号）。例如：快速选中删除函数中的代码，重写函数体代码或重写括号内里的内容。" class="headerlink" title="选择括号内的内容（继续选择父括号）。例如：快速选中删除函数中的代码，重写函数体代码或重写括号内里的内容。"></a>选择括号内的内容（继续选择父括号）。例如：快速选中删除函数中的代码，重写函数体代码或重写括号内里的内容。</h6><p><code>Ctrl+Shift+M</code></p>
+<h6 id="向上选中多行。"><a href="#向上选中多行。" class="headerlink" title="向上选中多行。"></a>向上选中多行。</h6><p><code>shift+↑</code></p>
+<h6 id="向下选中多行。"><a href="#向下选中多行。" class="headerlink" title="向下选中多行。"></a>向下选中多行。</h6><p><code>shift+↓</code></p>
+<h6 id="向左选中文本。"><a href="#向左选中文本。" class="headerlink" title="向左选中文本。"></a>向左选中文本。</h6><p><code>Shift+←</code></p>
+<h6 id="向右选中文本。"><a href="#向右选中文本。" class="headerlink" title="向右选中文本。"></a>向右选中文本。</h6><p><code>Shift+→</code></p>
+<h6 id="向左单位性地选中文本。"><a href="#向左单位性地选中文本。" class="headerlink" title="向左单位性地选中文本。"></a>向左单位性地选中文本。</h6><p><code>Ctrl+Shift+←</code></p>
+<h6 id="向右单位性地选中文本。"><a href="#向右单位性地选中文本。" class="headerlink" title="向右单位性地选中文本。"></a>向右单位性地选中文本。</h6><p><code>Ctrl+Shift+→</code></p>
+<h5 id="移动"><a href="#移动" class="headerlink" title="移动"></a>移动</h5><h6 id="光标移动至括号内结束或开始的位置。"><a href="#光标移动至括号内结束或开始的位置。" class="headerlink" title="光标移动至括号内结束或开始的位置。"></a>光标移动至括号内结束或开始的位置。</h6><p><code>Ctrl+M</code></p>
+<h6 id="向左单位性地移动光标，快速移动光标。"><a href="#向左单位性地移动光标，快速移动光标。" class="headerlink" title="向左单位性地移动光标，快速移动光标。"></a>向左单位性地移动光标，快速移动光标。</h6><p><code>Ctrl+←</code></p>
+<h6 id="向右单位性地移动光标，快速移动光标。"><a href="#向右单位性地移动光标，快速移动光标。" class="headerlink" title="向右单位性地移动光标，快速移动光标。"></a>向右单位性地移动光标，快速移动光标。</h6><p><code>Ctrl+→</code></p>
+<h6 id="输入数字跳转到指定行。与-Ctrl-P-输人-：-再输入数字一样的功能。"><a href="#输入数字跳转到指定行。与-Ctrl-P-输人-：-再输入数字一样的功能。" class="headerlink" title="输入数字跳转到指定行。与 Ctrl + P 输人 ： 再输入数字一样的功能。"></a>输入数字跳转到指定行。与 Ctrl + P 输人 ： 再输入数字一样的功能。</h6><p><code>Ctrl+G</code></p>
+<h5 id="折叠"><a href="#折叠" class="headerlink" title="折叠"></a>折叠</h5><h6 id="选中代码，按下快捷键，折叠代码。"><a href="#选中代码，按下快捷键，折叠代码。" class="headerlink" title="选中代码，按下快捷键，折叠代码。"></a>选中代码，按下快捷键，折叠代码。</h6><p><code>Ctrl+Shift+[</code></p>
+<h6 id="选中代码，按下快捷键，展开代码。"><a href="#选中代码，按下快捷键，展开代码。" class="headerlink" title="选中代码，按下快捷键，展开代码。"></a>选中代码，按下快捷键，展开代码。</h6><p><code>Ctrl+Shift+]</code></p>
+<h6 id="展开所有折叠代码。"><a href="#展开所有折叠代码。" class="headerlink" title="展开所有折叠代码。"></a>展开所有折叠代码。</h6><p><code>Ctrl+K+0</code></p>
+<h5 id="缩进"><a href="#缩进" class="headerlink" title="缩进"></a>缩进</h5><h6 id="向右缩进。"><a href="#向右缩进。" class="headerlink" title="向右缩进。"></a>向右缩进。</h6><p><code>Tab</code></p>
+<h6 id="向左缩进。"><a href="#向左缩进。" class="headerlink" title="向左缩进。"></a>向左缩进。</h6><p><code>Shift+Tab</code></p>
+<h6 id="向右缩进。-1"><a href="#向右缩进。-1" class="headerlink" title="向右缩进。"></a>向右缩进。</h6><p><code>Ctrl+]</code></p>
+<h6 id="向左不缩进。"><a href="#向左不缩进。" class="headerlink" title="向左不缩进。"></a>向左不缩进。</h6><p><code>Ctrl+[</code></p>
+<h5 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h5><h6 id="注释单行。"><a href="#注释单行。" class="headerlink" title="注释单行。"></a>注释单行。</h6><p><code>Ctrl+/</code></p>
+<h6 id="注释多行。"><a href="#注释多行。" class="headerlink" title="注释多行。"></a>注释多行。</h6><p><code>Ctrl+Shift+/</code></p>
+<h5 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h5><h6 id="从光标处开始删除代码至行尾。"><a href="#从光标处开始删除代码至行尾。" class="headerlink" title="从光标处开始删除代码至行尾。"></a>从光标处开始删除代码至行尾。</h6><p><code>Ctrl+K+K</code></p>
+<h6 id="删除整行。"><a href="#删除整行。" class="headerlink" title="删除整行。"></a>删除整行。</h6><p><code>Ctrl+Shift+K</code></p>
+<h5 id="撤消"><a href="#撤消" class="headerlink" title="撤消"></a>撤消</h5><h6 id="撤销。"><a href="#撤销。" class="headerlink" title="撤销。"></a>撤销。</h6><p><code>Ctrl+Z</code></p>
+<h6 id="恢复撤销。"><a href="#恢复撤销。" class="headerlink" title="恢复撤销。"></a>恢复撤销。</h6><p><code>Ctrl+Y</code></p>
+<h6 id="软撤销，撤销光标位置。"><a href="#软撤销，撤销光标位置。" class="headerlink" title="软撤销，撤销光标位置。"></a>软撤销，撤销光标位置。</h6><p><code>Ctrl+U</code></p>
+<h5 id="大小写转换"><a href="#大小写转换" class="headerlink" title="大小写转换"></a>大小写转换</h5><h6 id="转换大写。"><a href="#转换大写。" class="headerlink" title="转换大写。"></a>转换大写。</h6><p><code>Ctrl+K+U</code></p>
+<h6 id="转换小写。"><a href="#转换小写。" class="headerlink" title="转换小写。"></a>转换小写。</h6><p><code>Ctrl+K+L</code></p>
+<h5 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h5><h6 id="打开底部搜索框，查找关键字。如果先选中文本再按快捷键，则自动开始查找。"><a href="#打开底部搜索框，查找关键字。如果先选中文本再按快捷键，则自动开始查找。" class="headerlink" title="打开底部搜索框，查找关键字。如果先选中文本再按快捷键，则自动开始查找。"></a>打开底部搜索框，查找关键字。如果先选中文本再按快捷键，则自动开始查找。</h6><p><code>Ctrl+F</code></p>
+<h6 id="查找并替换。"><a href="#查找并替换。" class="headerlink" title="查找并替换。"></a>查找并替换。</h6><p><code>Ctrl+H</code></p>
+<h6 id="在文件夹内查找，允许添加多个文件夹进行查找，同时支持替换。"><a href="#在文件夹内查找，允许添加多个文件夹进行查找，同时支持替换。" class="headerlink" title="在文件夹内查找，允许添加多个文件夹进行查找，同时支持替换。"></a>在文件夹内查找，允许添加多个文件夹进行查找，同时支持替换。</h6><p><code>Ctrl+shift+F</code></p>
+<h6 id="打开搜索框。该搜索框有强大的搜索功能："><a href="#打开搜索框。该搜索框有强大的搜索功能：" class="headerlink" title="打开搜索框。该搜索框有强大的搜索功能："></a>打开搜索框。该搜索框有强大的搜索功能：</h6><p><code>Ctrl+P</code></p>
+<h6 id="打开搜索框，自动带-，输入关键字，查找文件中的函数名。举个栗子：在函数较多的页面快速查找某个函数。"><a href="#打开搜索框，自动带-，输入关键字，查找文件中的函数名。举个栗子：在函数较多的页面快速查找某个函数。" class="headerlink" title="打开搜索框，自动带@，输入关键字，查找文件中的函数名。举个栗子：在函数较多的页面快速查找某个函数。"></a>打开搜索框，自动带@，输入关键字，查找文件中的函数名。举个栗子：在函数较多的页面快速查找某个函数。</h6><p><code>Ctrl+R</code></p>
+<blockquote>
+<p>1、输入当前项目中的文件名，快速搜索文件，<br>2、输入@和关键字，查找文件中函数名，<br>3、输入：和数字，跳转到文件中该行代码，<br>4、输入#和关键字，查找变量名。</p>
+</blockquote>
+<h6 id="打开搜索框，自动带-，输入关键字，查找文件中的变量名、属性名等。"><a href="#打开搜索框，自动带-，输入关键字，查找文件中的变量名、属性名等。" class="headerlink" title="打开搜索框，自动带#，输入关键字，查找文件中的变量名、属性名等。"></a>打开搜索框，自动带#，输入关键字，查找文件中的变量名、属性名等。</h6><p><code>Ctrl+：</code></p>
+<h6 id="打开命令框。场景栗子：打开命名框，输入关键字，调用sublime-text或插件的功能，例如使用package安装插件。"><a href="#打开命令框。场景栗子：打开命名框，输入关键字，调用sublime-text或插件的功能，例如使用package安装插件。" class="headerlink" title="打开命令框。场景栗子：打开命名框，输入关键字，调用sublime text或插件的功能，例如使用package安装插件。"></a>打开命令框。场景栗子：打开命名框，输入关键字，调用sublime text或插件的功能，例如使用package安装插件。</h6><p><code>Ctrl+Shift+P</code></p>
+<h5 id="分屏"><a href="#分屏" class="headerlink" title="分屏"></a>分屏</h5><h6 id="窗口分屏，恢复默认1屏（非小键盘的数字）。"><a href="#窗口分屏，恢复默认1屏（非小键盘的数字）。" class="headerlink" title="窗口分屏，恢复默认1屏（非小键盘的数字）。"></a>窗口分屏，恢复默认1屏（非小键盘的数字）。</h6><p><code>Alt+Shift+1</code></p>
+<h6 id="左右分屏-2列。"><a href="#左右分屏-2列。" class="headerlink" title="左右分屏-2列。"></a>左右分屏-2列。</h6><p><code>Alt+Shift+2</code></p>
+<h6 id="左右分屏-3列。"><a href="#左右分屏-3列。" class="headerlink" title="左右分屏-3列。"></a>左右分屏-3列。</h6><p><code>Alt+Shift+3</code></p>
+<h6 id="左右分屏-4列。"><a href="#左右分屏-4列。" class="headerlink" title="左右分屏-4列。"></a>左右分屏-4列。</h6><p><code>Alt+Shift+4</code></p>
+<h6 id="等分4屏。"><a href="#等分4屏。" class="headerlink" title="等分4屏。"></a>等分4屏。</h6><p><code>Alt+Shift+5</code></p>
+<h6 id="垂直分屏-2屏。"><a href="#垂直分屏-2屏。" class="headerlink" title="垂直分屏-2屏。"></a>垂直分屏-2屏。</h6><p><code>Alt+Shift+8</code></p>
+<h6 id="垂直分屏-3屏。"><a href="#垂直分屏-3屏。" class="headerlink" title="垂直分屏-3屏。"></a>垂直分屏-3屏。</h6><p><code>Alt+Shift+9</code></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="王洋 wechat" style="width: 200px; max-width: 100%;">
+    <div>我的微信号，欢迎交流~</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/17/Spring boot笔记（二）/" rel="next" title="Spring boot笔记（二）">
+                <i class="fa fa-chevron-left"></i> Spring boot笔记（二）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2018/01/19/Sublime Text快捷键/" data-title="Sublime快捷键" data-url="http://blog.hackyang.cn/2018/01/19/Sublime Text快捷键/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://avatars1.githubusercontent.com/u/3038374?v=3&s=460" alt="王洋">
+          <p class="site-author-name" itemprop="name">王洋</p>
+          <p class="site-description motion-element" itemprop="description">我真的想让这个世界变得更好，但是他们不给我源代码……</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wy353208214" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/wangyang1989325" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Sublime快捷键"><span class="nav-number">1.</span> <span class="nav-text">Sublime快捷键</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#插入"><span class="nav-number">1.1.</span> <span class="nav-text">插入</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#在下一行插入新行。即使光标不在行尾，也能快速向下插入一行"><span class="nav-number">1.1.1.</span> <span class="nav-text">在下一行插入新行。即使光标不在行尾，也能快速向下插入一行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#在上一行插入新行。即使光标不在行首，也能快速向上插入一行"><span class="nav-number">1.1.2.</span> <span class="nav-text">在上一行插入新行。即使光标不在行首，也能快速向上插入一行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#复制光标所在整行，插入到下一行。即先将光标所在行复制，然后再插入到光标所在的下一行"><span class="nav-number">1.1.3.</span> <span class="nav-text">复制光标所在整行，插入到下一行。即先将光标所在行复制，然后再插入到光标所在的下一行</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#编辑"><span class="nav-number">1.2.</span> <span class="nav-text">编辑</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#合并选中的多行代码为一行。例如：将多行格式的CSS属性合并为一行。"><span class="nav-number">1.2.1.</span> <span class="nav-text">合并选中的多行代码为一行。例如：将多行格式的CSS属性合并为一行。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#粘贴并保持缩进"><span class="nav-number">1.2.2.</span> <span class="nav-text">粘贴并保持缩进</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用标签包裹一行，Web开发利器"><span class="nav-number">1.2.3.</span> <span class="nav-text">使用标签包裹一行，Web开发利器</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#移除与光标所在位置相关的父标签。对清除标记很有帮助。"><span class="nav-number">1.2.4.</span> <span class="nav-text">移除与光标所在位置相关的父标签。对清除标记很有帮助。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#按Ctrl，依次点击或选取，可需要编辑的多个位置"><span class="nav-number">1.2.5.</span> <span class="nav-text">按Ctrl，依次点击或选取，可需要编辑的多个位置</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Esc-退出光标多行选择，退出搜索框，命令框等"><span class="nav-number">1.2.6.</span> <span class="nav-text">Esc 退出光标多行选择，退出搜索框，命令框等</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#开启-关闭侧边栏"><span class="nav-number">1.2.7.</span> <span class="nav-text">开启/关闭侧边栏</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#选择"><span class="nav-number">1.3.</span> <span class="nav-text">选择</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#选中光标所占的文本，继续操作则会选中下一个相同的文本"><span class="nav-number">1.3.1.</span> <span class="nav-text">选中光标所占的文本，继续操作则会选中下一个相同的文本</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#选中文本按下快捷键，即可一次性选择全部的相同文本进行同时编辑。例如：快速选中并更改所有相同的变量名、函数名等。"><span class="nav-number">1.3.2.</span> <span class="nav-text">选中文本按下快捷键，即可一次性选择全部的相同文本进行同时编辑。例如：快速选中并更改所有相同的变量名、函数名等。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#选中整行，继续操作则继续选择下一行，效果和-Shift-↓-效果一样。"><span class="nav-number">1.3.3.</span> <span class="nav-text">选中整行，继续操作则继续选择下一行，效果和 Shift+↓ 效果一样。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#先选中多行，再按下快捷键，会在每行行尾插入光标，即可同时编辑这些行。"><span class="nav-number">1.3.4.</span> <span class="nav-text">先选中多行，再按下快捷键，会在每行行尾插入光标，即可同时编辑这些行。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#选择括号内的内容（继续选择父括号）。例如：快速选中删除函数中的代码，重写函数体代码或重写括号内里的内容。"><span class="nav-number">1.3.5.</span> <span class="nav-text">选择括号内的内容（继续选择父括号）。例如：快速选中删除函数中的代码，重写函数体代码或重写括号内里的内容。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#向上选中多行。"><span class="nav-number">1.3.6.</span> <span class="nav-text">向上选中多行。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#向下选中多行。"><span class="nav-number">1.3.7.</span> <span class="nav-text">向下选中多行。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#向左选中文本。"><span class="nav-number">1.3.8.</span> <span class="nav-text">向左选中文本。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#向右选中文本。"><span class="nav-number">1.3.9.</span> <span class="nav-text">向右选中文本。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#向左单位性地选中文本。"><span class="nav-number">1.3.10.</span> <span class="nav-text">向左单位性地选中文本。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#向右单位性地选中文本。"><span class="nav-number">1.3.11.</span> <span class="nav-text">向右单位性地选中文本。</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#移动"><span class="nav-number">1.4.</span> <span class="nav-text">移动</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#光标移动至括号内结束或开始的位置。"><span class="nav-number">1.4.1.</span> <span class="nav-text">光标移动至括号内结束或开始的位置。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#向左单位性地移动光标，快速移动光标。"><span class="nav-number">1.4.2.</span> <span class="nav-text">向左单位性地移动光标，快速移动光标。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#向右单位性地移动光标，快速移动光标。"><span class="nav-number">1.4.3.</span> <span class="nav-text">向右单位性地移动光标，快速移动光标。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#输入数字跳转到指定行。与-Ctrl-P-输人-：-再输入数字一样的功能。"><span class="nav-number">1.4.4.</span> <span class="nav-text">输入数字跳转到指定行。与 Ctrl + P 输人 ： 再输入数字一样的功能。</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#折叠"><span class="nav-number">1.5.</span> <span class="nav-text">折叠</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#选中代码，按下快捷键，折叠代码。"><span class="nav-number">1.5.1.</span> <span class="nav-text">选中代码，按下快捷键，折叠代码。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#选中代码，按下快捷键，展开代码。"><span class="nav-number">1.5.2.</span> <span class="nav-text">选中代码，按下快捷键，展开代码。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#展开所有折叠代码。"><span class="nav-number">1.5.3.</span> <span class="nav-text">展开所有折叠代码。</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#缩进"><span class="nav-number">1.6.</span> <span class="nav-text">缩进</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#向右缩进。"><span class="nav-number">1.6.1.</span> <span class="nav-text">向右缩进。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#向左缩进。"><span class="nav-number">1.6.2.</span> <span class="nav-text">向左缩进。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#向右缩进。-1"><span class="nav-number">1.6.3.</span> <span class="nav-text">向右缩进。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#向左不缩进。"><span class="nav-number">1.6.4.</span> <span class="nav-text">向左不缩进。</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#注释"><span class="nav-number">1.7.</span> <span class="nav-text">注释</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#注释单行。"><span class="nav-number">1.7.1.</span> <span class="nav-text">注释单行。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#注释多行。"><span class="nav-number">1.7.2.</span> <span class="nav-text">注释多行。</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除"><span class="nav-number">1.8.</span> <span class="nav-text">删除</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#从光标处开始删除代码至行尾。"><span class="nav-number">1.8.1.</span> <span class="nav-text">从光标处开始删除代码至行尾。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#删除整行。"><span class="nav-number">1.8.2.</span> <span class="nav-text">删除整行。</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#撤消"><span class="nav-number">1.9.</span> <span class="nav-text">撤消</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#撤销。"><span class="nav-number">1.9.1.</span> <span class="nav-text">撤销。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#恢复撤销。"><span class="nav-number">1.9.2.</span> <span class="nav-text">恢复撤销。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#软撤销，撤销光标位置。"><span class="nav-number">1.9.3.</span> <span class="nav-text">软撤销，撤销光标位置。</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#大小写转换"><span class="nav-number">1.10.</span> <span class="nav-text">大小写转换</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#转换大写。"><span class="nav-number">1.10.1.</span> <span class="nav-text">转换大写。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#转换小写。"><span class="nav-number">1.10.2.</span> <span class="nav-text">转换小写。</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查找"><span class="nav-number">1.11.</span> <span class="nav-text">查找</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#打开底部搜索框，查找关键字。如果先选中文本再按快捷键，则自动开始查找。"><span class="nav-number">1.11.1.</span> <span class="nav-text">打开底部搜索框，查找关键字。如果先选中文本再按快捷键，则自动开始查找。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#查找并替换。"><span class="nav-number">1.11.2.</span> <span class="nav-text">查找并替换。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#在文件夹内查找，允许添加多个文件夹进行查找，同时支持替换。"><span class="nav-number">1.11.3.</span> <span class="nav-text">在文件夹内查找，允许添加多个文件夹进行查找，同时支持替换。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#打开搜索框。该搜索框有强大的搜索功能："><span class="nav-number">1.11.4.</span> <span class="nav-text">打开搜索框。该搜索框有强大的搜索功能：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#打开搜索框，自动带-，输入关键字，查找文件中的函数名。举个栗子：在函数较多的页面快速查找某个函数。"><span class="nav-number">1.11.5.</span> <span class="nav-text">打开搜索框，自动带@，输入关键字，查找文件中的函数名。举个栗子：在函数较多的页面快速查找某个函数。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#打开搜索框，自动带-，输入关键字，查找文件中的变量名、属性名等。"><span class="nav-number">1.11.6.</span> <span class="nav-text">打开搜索框，自动带#，输入关键字，查找文件中的变量名、属性名等。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#打开命令框。场景栗子：打开命名框，输入关键字，调用sublime-text或插件的功能，例如使用package安装插件。"><span class="nav-number">1.11.7.</span> <span class="nav-text">打开命令框。场景栗子：打开命名框，输入关键字，调用sublime text或插件的功能，例如使用package安装插件。</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分屏"><span class="nav-number">1.12.</span> <span class="nav-text">分屏</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#窗口分屏，恢复默认1屏（非小键盘的数字）。"><span class="nav-number">1.12.1.</span> <span class="nav-text">窗口分屏，恢复默认1屏（非小键盘的数字）。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#左右分屏-2列。"><span class="nav-number">1.12.2.</span> <span class="nav-text">左右分屏-2列。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#左右分屏-3列。"><span class="nav-number">1.12.3.</span> <span class="nav-text">左右分屏-3列。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#左右分屏-4列。"><span class="nav-number">1.12.4.</span> <span class="nav-text">左右分屏-4列。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#等分4屏。"><span class="nav-number">1.12.5.</span> <span class="nav-text">等分4屏。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#垂直分屏-2屏。"><span class="nav-number">1.12.6.</span> <span class="nav-text">垂直分屏-2屏。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#垂直分屏-3屏。"><span class="nav-number">1.12.7.</span> <span class="nav-text">垂直分屏-3屏。</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王洋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv"> 本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kitkat"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Sb3RSVDF7jyxciT13l5qMtjL-gzGzoHsz", "sw4QAmE49mU8F9fnpmY9CdiW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

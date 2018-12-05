@@ -1,0 +1,823 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Android,Launcher,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="王洋" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="Launcher分析当用户点击手机桌面上的shortIcon的时候，系统这个时候是通过Launcher这类启动app的，首先先介绍下什么是Launcher.通过查看源码知道，Launcher是继承Activity，因此Launcher简单理解他就是一个Activity，而这个Activity通常情况是不能被销毁的，相当于系统页面.我们进入onCreate函数看下：12345678910111213">
+<meta name="keywords" content="Android,Launcher">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Launcher启动流程分析（一）">
+<meta property="og:url" content="http://blog.hackyang.cn/2016/08/31/App启动流程分析/index.html">
+<meta property="og:site_name" content="王洋">
+<meta property="og:description" content="Launcher分析当用户点击手机桌面上的shortIcon的时候，系统这个时候是通过Launcher这类启动app的，首先先介绍下什么是Launcher.通过查看源码知道，Launcher是继承Activity，因此Launcher简单理解他就是一个Activity，而这个Activity通常情况是不能被销毁的，相当于系统页面.我们进入onCreate函数看下：12345678910111213">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-05T01:15:48.262Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Launcher启动流程分析（一）">
+<meta name="twitter:description" content="Launcher分析当用户点击手机桌面上的shortIcon的时候，系统这个时候是通过Launcher这类启动app的，首先先介绍下什么是Launcher.通过查看源码知道，Launcher是继承Activity，因此Launcher简单理解他就是一个Activity，而这个Activity通常情况是不能被销毁的，相当于系统页面.我们进入onCreate函数看下：12345678910111213">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6321919226709804000,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://blog.hackyang.cn/2016/08/31/App启动流程分析/">
+
+  <title> Launcher启动流程分析（一） | 王洋 </title>
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">王洋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Kitkat</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Launcher启动流程分析（一）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-31T19:06:03+08:00" content="2016-08-31">
+              2016-08-31
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/31/App启动流程分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/31/App启动流程分析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/08/31/App启动流程分析/" class="leancloud_visitors" data-flag-title="Launcher启动流程分析（一）">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="Launcher分析"><a href="#Launcher分析" class="headerlink" title="Launcher分析"></a>Launcher分析</h4><p>当用户点击手机桌面上的shortIcon的时候，系统这个时候是通过Launcher这类启动app的，首先先介绍下什么是<strong>Launcher</strong>.通过查看源码知道，Launcher是继承Activity，因此Launcher简单理解他就是一个Activity，而这个Activity通常情况是不能被销毁的，相当于系统页面.我们进入<strong>onCreate</strong>函数看下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Launcher</span> <span class="keyword">extends</span> <span class="title">Activity</span></span></span><br><span class="line"><span class="class">       <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span>, <span class="title">OnLongClickListener</span>, <span class="title">LauncherModel</span>.<span class="title">Callbacks</span>,</span></span><br><span class="line"><span class="class">                  <span class="title">View</span>.<span class="title">OnTouchListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">           <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">           	&lt;!--省略--&gt;</span><br><span class="line">               LauncherApplication app = ((LauncherApplication)getApplication());</span><br><span class="line">               mSharedPrefs = getSharedPreferences(LauncherApplication.getSharedPreferencesKey(),</span><br><span class="line">                       Context.MODE_PRIVATE);</span><br><span class="line">               <span class="comment">//这里绑定Launcher到LauncherModel.Callbacks的接口中</span></span><br><span class="line">               mModel = app.setLauncher(<span class="keyword">this</span>);</span><br><span class="line">               &lt;!--省略--&gt;</span><br><span class="line"></span><br><span class="line">               <span class="comment">//加载了launcher的布局文件</span></span><br><span class="line">               setContentView(R.layout.launcher);</span><br><span class="line">			<span class="comment">//设置布局文件的theme属性，主要是初始化了一些UI组件，如AppWidghts（小部件）、AppTabHost（导航栏）、AppAppsCustomizeContent（这个类就是桌面放置app icon的容器）</span></span><br><span class="line">               setupViews();</span><br><span class="line">               &lt;!--省略--&gt;</span><br><span class="line">               <span class="comment">//这里加载桌面的app图标</span></span><br><span class="line">               <span class="keyword">if</span> (!mRestoring) &#123;</span><br><span class="line">                   <span class="keyword">if</span> (sPausedFromUserAction) &#123;</span><br><span class="line">                       <span class="comment">// If the user leaves launcher, then we should just load items asynchronously when</span></span><br><span class="line">                       <span class="comment">// they return.</span></span><br><span class="line">                       mModel.startLoader(<span class="keyword">true</span>, -<span class="number">1</span>);</span><br><span class="line">                   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                       <span class="comment">// We only load the page synchronously if the user rotates (or triggers a</span></span><br><span class="line">                       <span class="comment">// configuration change) while launcher is in the foreground</span></span><br><span class="line">                       mModel.startLoader(<span class="keyword">true</span>, mWorkspace.getCurrentPage());</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>布局文件：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Full screen view projects under the status bar and contains the background --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">FrameLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:launcher</span>=<span class="string">"http://schemas.android.com/apk/res/com.android.launcher"</span></span></span><br><span class="line"><span class="tag"></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/launcher"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:background</span>=<span class="string">"@drawable/workspace_bg"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">com.android.launcher2.DragLayer</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/drag_layer"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:fitsSystemWindows</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- The workspace contains 5 screens of cells --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">com.android.launcher2.Workspace</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/workspace"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:paddingStart</span>=<span class="string">"@dimen/workspace_left_padding"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:paddingEnd</span>=<span class="string">"@dimen/workspace_right_padding"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:paddingTop</span>=<span class="string">"@dimen/workspace_top_padding"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:paddingBottom</span>=<span class="string">"@dimen/workspace_bottom_padding"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">launcher:defaultScreen</span>=<span class="string">"2"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">launcher:cellCountX</span>=<span class="string">"@integer/cell_count_x"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">launcher:cellCountY</span>=<span class="string">"@integer/cell_count_y"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">launcher:pageSpacing</span>=<span class="string">"@dimen/workspace_page_spacing"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">launcher:scrollIndicatorPaddingLeft</span>=<span class="string">"@dimen/qsb_bar_height"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">launcher:scrollIndicatorPaddingRight</span>=<span class="string">"@dimen/button_bar_height"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">include</span> <span class="attr">android:id</span>=<span class="string">"@+id/cell1"</span> <span class="attr">layout</span>=<span class="string">"@layout/workspace_screen"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">include</span> <span class="attr">android:id</span>=<span class="string">"@+id/cell2"</span> <span class="attr">layout</span>=<span class="string">"@layout/workspace_screen"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">include</span> <span class="attr">android:id</span>=<span class="string">"@+id/cell3"</span> <span class="attr">layout</span>=<span class="string">"@layout/workspace_screen"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">include</span> <span class="attr">android:id</span>=<span class="string">"@+id/cell4"</span> <span class="attr">layout</span>=<span class="string">"@layout/workspace_screen"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">include</span> <span class="attr">android:id</span>=<span class="string">"@+id/cell5"</span> <span class="attr">layout</span>=<span class="string">"@layout/workspace_screen"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">com.android.launcher2.Workspace</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/qsb_divider"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">layout</span>=<span class="string">"@layout/workspace_divider"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_marginStart</span>=<span class="string">"@dimen/qsb_bar_height"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_gravity</span>=<span class="string">"start"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/dock_divider"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">layout</span>=<span class="string">"@layout/workspace_divider"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_marginEnd</span>=<span class="string">"@dimen/button_bar_height"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_gravity</span>=<span class="string">"end"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/paged_view_indicator"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">layout</span>=<span class="string">"@layout/scroll_indicator"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_gravity</span>=<span class="string">"bottom"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">"@layout/hotseat"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/hotseat"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"@dimen/button_bar_height_plus_padding"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_gravity</span>=<span class="string">"end"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/qsb_bar"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">layout</span>=<span class="string">"@layout/qsb_bar"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- The Workspace cling must appear under the AppsCustomizePagedView below to ensure</span></span><br><span class="line"><span class="comment">             that it is still visible during the transition to AllApps and doesn't overlay on</span></span><br><span class="line"><span class="comment">             top of that view. --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">"@layout/workspace_cling"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/workspace_cling"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:visibility</span>=<span class="string">"gone"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">"@layout/folder_cling"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/folder_cling"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:visibility</span>=<span class="string">"gone"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">com.android.launcher2.DrawableStateProxyView</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/voice_button_proxy"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"@dimen/qsb_bar_height"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"@dimen/app_icon_size"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_gravity</span>=<span class="string">"top|start"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_marginTop</span>=<span class="string">"64dp"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:clickable</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:onClick</span>=<span class="string">"onClickVoiceButton"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:importantForAccessibility</span>=<span class="string">"no"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">launcher:sourceViewId</span>=<span class="string">"@+id/voice_button"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">"@layout/apps_customize_pane"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/apps_customize_pane"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:visibility</span>=<span class="string">"invisible"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">com.android.launcher2.DragLayer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">FrameLayout</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<!--我们主要看Workspace这个布局，它就是我们在手机上看到的分屏，通常就是桌面的屏幕，就是那个左右可滑动的容器，，每个Workspace里面含有一个CellLayout。-->
+<p>桌面上显示的app icon都是放在apps_customize_pane.xml文件中，看下布局文件<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">com.android.launcher2.AppsCustomizeTabHost</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:launcher</span>=<span class="string">"http://schemas.android.com/apk/res/com.android.launcher"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:background</span>=<span class="string">"#FF000000"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/apps_customize_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:orientation</span>=<span class="string">"vertical"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:visibility</span>=<span class="string">"gone"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- The layout_width of the tab bar gets overriden to align the content</span></span><br><span class="line"><span class="comment">             with the text in the tabs in AppsCustomizeTabHost. --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">FrameLayout</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/tabs_container"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"@dimen/apps_customize_tab_bar_height"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_marginTop</span>=<span class="string">"@dimen/apps_customize_tab_bar_margin_top"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_gravity</span>=<span class="string">"center_horizontal"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">com.android.launcher2.FocusOnlyTabWidget</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:id</span>=<span class="string">"@android:id/tabs"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_gravity</span>=<span class="string">"center"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:gravity</span>=<span class="string">"start"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:background</span>=<span class="string">"@drawable/tab_unselected_holo"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:tabStripEnabled</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:divider</span>=<span class="string">"@null"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">include</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:id</span>=<span class="string">"@+id/market_button"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">layout</span>=<span class="string">"@layout/market_button"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_gravity</span>=<span class="string">"end"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">FrameLayout</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">FrameLayout</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@android:id/tabcontent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">com.android.launcher2.AppsCustomizePagedView</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:id</span>=<span class="string">"@+id/apps_customize_pane_content"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:maxAppCellCountX</span>=<span class="string">"@integer/apps_customize_maxCellCountX"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:maxAppCellCountY</span>=<span class="string">"@integer/apps_customize_maxCellCountY"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:pageLayoutWidthGap</span>=<span class="string">"@dimen/apps_customize_pageLayoutWidthGap"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:pageLayoutHeightGap</span>=<span class="string">"@dimen/apps_customize_pageLayoutHeightGap"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:pageLayoutPaddingTop</span>=<span class="string">"@dimen/apps_customize_pageLayoutPaddingTop"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:pageLayoutPaddingBottom</span>=<span class="string">"@dimen/apps_customize_pageLayoutPaddingBottom"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:pageLayoutPaddingLeft</span>=<span class="string">"@dimen/apps_customize_pageLayoutPaddingLeft"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:pageLayoutPaddingRight</span>=<span class="string">"@dimen/apps_customize_pageLayoutPaddingRight"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:widgetCellWidthGap</span>=<span class="string">"@dimen/apps_customize_widget_cell_width_gap"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:widgetCellHeightGap</span>=<span class="string">"@dimen/apps_customize_widget_cell_height_gap"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:widgetCountX</span>=<span class="string">"@integer/apps_customize_widget_cell_count_x"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:widgetCountY</span>=<span class="string">"@integer/apps_customize_widget_cell_count_y"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:clingFocusedX</span>=<span class="string">"@integer/apps_customize_cling_focused_x"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:clingFocusedY</span>=<span class="string">"@integer/apps_customize_cling_focused_y"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">launcher:maxGap</span>=<span class="string">"@dimen/workspace_max_gap"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">FrameLayout</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:id</span>=<span class="string">"@+id/animation_buffer"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:background</span>=<span class="string">"#FF000000"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:visibility</span>=<span class="string">"gone"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">include</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:id</span>=<span class="string">"@+id/paged_view_indicator"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">layout</span>=<span class="string">"@layout/scroll_indicator"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_gravity</span>=<span class="string">"bottom"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">FrameLayout</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">"@layout/all_apps_cling"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/all_apps_cling"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:visibility</span>=<span class="string">"gone"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">com.android.launcher2.AppsCustomizeTabHost</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>核心View是AppsCustomizePagedView，它是一个展示applications, widgets, and shortcuts的ViewGroup，后面我再做详细的分析。</p>
+<p>解释下<strong>mModel</strong>，它是一个<strong>LauncherModel</strong>实例，<strong>LauncherModel</strong>里面有许多封装的对数据库的操作。包含几个线程，其中最主要的是ApplicationsLoader和DesktopItemsLoader。ApplicationsLoader在加载所有应用程序时使用，DesktopItemsLoader在加载workspace的时候使用。其他的函数就是对数据库的封装，比如在删除，替换，添加程序的时候做更新数据库和UI的工作.这里我们看下<strong>startLoader</strong>方法:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startLoader</span><span class="params">(<span class="keyword">boolean</span> isLaunching, <span class="keyword">int</span> synchronousBindPage)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (mLock) &#123;</span><br><span class="line">        <span class="comment">// Don't bother to start the thread if we know it's not going to do anything</span></span><br><span class="line">        <span class="keyword">if</span> (mCallbacks != <span class="keyword">null</span> &amp;&amp; mCallbacks.get() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// If there is already one running, tell it to stop.</span></span><br><span class="line">            <span class="comment">// also, don't downgrade isLaunching if we're already running</span></span><br><span class="line">            isLaunching = isLaunching || stopLoaderLocked();</span><br><span class="line">            <span class="comment">//这里开启了一个异步线程load一个workspace的桌面配置文件</span></span><br><span class="line">            mLoaderTask = <span class="keyword">new</span> LoaderTask(mApp, isLaunching);</span><br><span class="line">            <span class="keyword">if</span> (synchronousBindPage &gt; -<span class="number">1</span> &amp;&amp; mAllAppsLoaded &amp;&amp; mWorkspaceLoaded) &#123;</span><br><span class="line">                mLoaderTask.runBindSynchronousPage(synchronousBindPage);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                sWorkerThread.setPriority(Thread.NORM_PRIORITY);</span><br><span class="line">                sWorker.post(mLoaderTask);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>LoaderTask</strong>实现了runnable接口，看下它的<strong>run</strong>方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">LoaderTask</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">        <span class="keyword">synchronized</span> (mLock) &#123;</span><br><span class="line">            mIsLoaderTaskRunning = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        keep_running:</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// First step. Load workspace first, this is necessary since adding of apps from</span></span><br><span class="line">            <span class="comment">// managed profile in all apps is deferred until onResume. See http://b/17336902.</span></span><br><span class="line">            loadAndBindWorkspace();</span><br><span class="line">            <span class="keyword">if</span> (mStopped) &#123;</span><br><span class="line">                <span class="keyword">break</span> keep_running;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// Second step. Load all apps.加载桌面的apps</span></span><br><span class="line">            loadAndBindAllApps();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Update the saved icons if necessary</span></span><br><span class="line">        <span class="keyword">if</span> (DEBUG_LOADERS) Log.d(TAG, <span class="string">"Comparing loaded icons to database icons"</span>);</span><br><span class="line">        <span class="keyword">synchronized</span> (sBgLock) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Object key : sBgDbIconCache.keySet()) &#123;</span><br><span class="line">                updateSavedIcon(mContext, (ShortcutInfo) key, sBgDbIconCache.get(key));</span><br><span class="line">            &#125;</span><br><span class="line">            sBgDbIconCache.clear();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Clear out this reference, otherwise we end up holding it until all of the</span></span><br><span class="line">        <span class="comment">// callback runnables are done.</span></span><br><span class="line">        mContext = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">synchronized</span> (mLock) &#123;</span><br><span class="line">            <span class="comment">// If we are still the last one to be scheduled, remove ourselves.</span></span><br><span class="line">            <span class="keyword">if</span> (mLoaderTask == <span class="keyword">this</span>) &#123;</span><br><span class="line">                mLoaderTask = <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            mIsLoaderTaskRunning = <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>代码中已经做了注释，经过处理程序会执行到<strong>loadAndBindAllApps</strong>，我们直接跳转到<strong>loadAndBindAllApps</strong>方法中去看下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">loadAndBindAllApps</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="comment">//这里判断是否已经加载过app icon到桌面，如果没有就执行下面的代码</span></span><br><span class="line">    <span class="keyword">if</span> (!mAllAppsLoaded) &#123;</span><br><span class="line">        loadAllAppsByBatch();</span><br><span class="line">        <span class="keyword">synchronized</span> (LoaderTask.<span class="keyword">this</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (mStopped) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            mAllAppsLoaded = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        onlyBindAllApps();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着再进入<strong>loadAllAppsByBatch</strong>方法看下，首先通过mUserManager对象获取当前设备上的所有用户信息（返回一个链表），然后遍历整个列表，取得一个<strong>UserHandler</strong>对象。</p>
+<blockquote>
+<p><strong>UserHandler</strong>代表一个用户的设备信息，如桌面上有什么文件，哪些app是属于当前用户，哪些文件属于当前用户，当前用户拥有什么权限，都可以通过<strong>UserHandler</strong>获取.</p>
+</blockquote>
+<p>最后通过<strong>LauncherApps</strong>对象的<strong>getActivityList</strong>方法获取属于当前用户的app，也就是AndroidMainfest.xml文件中配置的IntentFilter标签，我们每个app都有这样一个启动程序入口activity，这里不做过多介绍了。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">loadAllAppsByBatch</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="comment">// Don't use these two variables in any of the callback runnables.</span></span><br><span class="line">      <span class="comment">// Otherwise we hold a reference to them.</span></span><br><span class="line">      <span class="keyword">final</span> Callbacks oldCallbacks = mCallbacks.get();</span><br><span class="line">&lt;!--省略--&gt;</span><br><span class="line">      <span class="comment">// 获取当前设备上所有的用户配置信息</span></span><br><span class="line">      <span class="keyword">final</span> List&lt;UserHandle&gt; profiles = mUserManager.getUserProfiles();</span><br><span class="line"></span><br><span class="line">      mBgAllAppsList.clear();</span><br><span class="line">      <span class="keyword">final</span> <span class="keyword">int</span> profileCount = profiles.size();</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> p = <span class="number">0</span>; p &lt; profileCount; p++) &#123;</span><br><span class="line">          UserHandle user = profiles.get(p);</span><br><span class="line">          List&lt;LauncherActivityInfo&gt; apps = <span class="keyword">null</span>;</span><br><span class="line">          <span class="keyword">int</span> N = Integer.MAX_VALUE;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">int</span> startIndex;</span><br><span class="line">          <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">          <span class="keyword">int</span> batchSize = -<span class="number">1</span>;</span><br><span class="line">          <span class="keyword">while</span> (i &lt; N &amp;&amp; !mStopped) &#123;</span><br><span class="line">              <span class="keyword">if</span> (i == <span class="number">0</span>) &#123;</span><br><span class="line">                  <span class="keyword">final</span> <span class="keyword">long</span> qiaTime = DEBUG_LOADERS ? SystemClock.uptimeMillis() : <span class="number">0</span>;</span><br><span class="line">                  <span class="comment">//这里返回所有IntenFilter标签带有LAUNCHER、MAIN的Activity</span></span><br><span class="line">                  apps = mLauncherApps.getActivityList(<span class="keyword">null</span>, user);</span><br><span class="line">                  <span class="comment">//重新排序</span></span><br><span class="line">                  Collections.sort(apps, <span class="keyword">new</span> LauncherModel.ShortcutNameComparator(mLabelCache));</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              startIndex = i;</span><br><span class="line">              <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">0</span>; i&lt;N &amp;&amp; j&lt;batchSize; j++) &#123;</span><br><span class="line">                  <span class="comment">// This builds the icon bitmaps.生成桌面图标的位图，并存放到mBgAllAppsList中</span></span><br><span class="line">                  mBgAllAppsList.add(<span class="keyword">new</span> ApplicationInfo(apps.get(i), user,</span><br><span class="line">                          mIconCache, mLabelCache));</span><br><span class="line">                  i++;</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="comment">//获取LauncherModel.Callback的回调，oldCallbacks是通过mCallbacks获取到的，mCallbacks是一个弱引用</span></span><br><span class="line">              <span class="keyword">final</span> Callbacks callbacks = tryGetCallbacks(oldCallbacks);</span><br><span class="line">              <span class="keyword">final</span> ArrayList&lt;ApplicationInfo&gt; added = mBgAllAppsList.added;</span><br><span class="line">              <span class="keyword">final</span> <span class="keyword">boolean</span> firstProfile = p == <span class="number">0</span>;</span><br><span class="line">              mBgAllAppsList.added = <span class="keyword">new</span> ArrayList&lt;ApplicationInfo&gt;();</span><br><span class="line">              <span class="comment">//这里使用handler post到主线程执行callBack回调，这里的callback其实就是前面说到的Launcher，Launcher本事实现了LauncherModel.Callback回调，这样load完成后就回到launcher中的回调接口中</span></span><br><span class="line">              mHandler.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                      <span class="keyword">if</span> (callbacks != <span class="keyword">null</span>) &#123;</span><br><span class="line">                          <span class="keyword">if</span> (firstProfile) &#123;</span><br><span class="line">                              callbacks.bindAllApplications(added);</span><br><span class="line">                          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                              callbacks.bindAppsAdded(added);</span><br><span class="line">                          &#125;</span><br><span class="line">                      &#125;</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125;);</span><br><span class="line">		&lt;!--省略--&gt;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>==<strong>注意：</strong>==这里说明下<strong>Launcher</strong>是怎么绑定<strong>LauncherModel.Callback</strong>接口的，我们回到前面<strong>Launcher.onCreate</strong>函数的开头，进入<strong>LauncherApplication</strong>的<strong>setLauncher</strong>方法中.在<strong>LauncherApplication</strong>的<strong>onCreate</strong>方法中实例化了一个<strong>LauncherModel</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LauncherApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line">        ......................................</span><br><span class="line">        mIconCache = <span class="keyword">new</span> IconCache(<span class="keyword">this</span>);</span><br><span class="line">        <span class="comment">//实例化一个LauncherModel</span></span><br><span class="line">        mModel = <span class="keyword">new</span> LauncherModel(<span class="keyword">this</span>, mIconCache);</span><br><span class="line">        LauncherApps launcherApps = (LauncherApps)</span><br><span class="line">                getSystemService(Context.LAUNCHER_APPS_SERVICE);</span><br><span class="line">        launcherApps.registerCallback(mModel.getLauncherAppsCallback());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">LauncherModel <span class="title">setLauncher</span><span class="params">(Launcher launcher)</span> </span>&#123;</span><br><span class="line">    	<span class="comment">//这里通过LauncherModel的initialize方法注入了LauncherModel.Callback接口，这样就实现了接口绑定</span></span><br><span class="line">        mModel.initialize(launcher);</span><br><span class="line">        <span class="keyword">return</span> mModel;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后我们回到<strong>Launcher</strong>的<strong>bindAllApplications</strong>回调函数中看下。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Add the icons for all apps.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Implementation of the method from LauncherModel.Callbacks.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">bindAllApplications</span><span class="params">(<span class="keyword">final</span> ArrayList&lt;ApplicationInfo&gt; apps)</span> </span>&#123;</span><br><span class="line">    Runnable setAllAppsRunnable = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (mAppsCustomizeContent != <span class="keyword">null</span>) &#123;</span><br><span class="line">                mAppsCustomizeContent.setApps(apps);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Remove the progress bar entirely; we could also make it GONE</span></span><br><span class="line">    <span class="comment">// but better to remove it since we know it's not going to be used</span></span><br><span class="line">    View progressBar = mAppsCustomizeTabHost.</span><br><span class="line">        findViewById(R.id.apps_customize_progress_bar);</span><br><span class="line">    <span class="keyword">if</span> (progressBar != <span class="keyword">null</span>) &#123;</span><br><span class="line">        ((ViewGroup)progressBar.getParent()).removeView(progressBar);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// We just post the call to setApps so the user sees the progress bar</span></span><br><span class="line">        <span class="comment">// disappear-- otherwise, it just looks like the progress bar froze</span></span><br><span class="line">        <span class="comment">// which doesn't look great</span></span><br><span class="line">        mAppsCustomizeTabHost.post(setAllAppsRunnable);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// If we did not initialize the spinner in onCreate, then we can directly set the</span></span><br><span class="line">        <span class="comment">// list of applications without waiting for any progress bars views to be hidden.</span></span><br><span class="line">        setAllAppsRunnable.run();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>调用了<strong>mAppsCustomizeContent.setApps</strong>方法，前面我们提到了<strong>AppsCustomizePagedView</strong>，这里我们再分析下，先看下<strong>AppsCustomizePagedView</strong>源码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppsCustomizePagedView</span> <span class="keyword">extends</span> <span class="title">PagedViewWithDraggableItems</span> <span class="keyword">implements</span></span></span><br><span class="line"><span class="class">        <span class="title">View</span>.<span class="title">OnClickListener</span>, <span class="title">View</span>.<span class="title">OnKeyListener</span>, <span class="title">DragSource</span>,</span></span><br><span class="line"><span class="class">        <span class="title">PagedViewIcon</span>.<span class="title">PressedCallback</span>, <span class="title">PagedViewWidget</span>.<span class="title">ShortPressListener</span>,</span></span><br><span class="line"><span class="class">        <span class="title">LauncherTransitionable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setApps</span><span class="params">(ArrayList&lt;ApplicationInfo&gt; list)</span> </span>&#123;</span><br><span class="line">            mApps = list;</span><br><span class="line">            Collections.sort(mApps, LauncherModel.getAppNameComparator());</span><br><span class="line">            updatePageCountsAndInvalidateData();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">updatePageCountsAndInvalidateData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (mInBulkBind) &#123;</span><br><span class="line">                mNeedToUpdatePageCountsAndInvalidateData = <span class="keyword">true</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                updatePageCounts();</span><br><span class="line">                invalidateOnDataChange();</span><br><span class="line">                mNeedToUpdatePageCountsAndInvalidateData = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">    	&#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * We should call thise method whenever the core data changes (mApps, mWidgets) so that we can</span></span><br><span class="line"><span class="comment">         * appropriately determine when to invalidate the PagedView page data.  In cases where the data</span></span><br><span class="line"><span class="comment">         * has yet to be set, we can requestLayout() and wait for onDataReady() to be called in the</span></span><br><span class="line"><span class="comment">         * next onMeasure() pass, which will trigger an invalidatePageData() itself.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">invalidateOnDataChange</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (!isDataReady()) &#123;</span><br><span class="line">                <span class="comment">// The next layout pass will trigger data-ready if both widgets and apps are set, so</span></span><br><span class="line">                <span class="comment">// request a layout to trigger the page data when ready.</span></span><br><span class="line">                requestLayout();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cancelAllTasks();</span><br><span class="line">                invalidatePageData();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先经过<strong>updatePageCountsAndInvalidateData</strong>–&gt;&gt;<strong>invalidateOnDataChange</strong>–&gt;&gt;<strong>invalidateOnDataChange</strong>，最后会进入invalidatePageData方法，这里会调用父类invalidatePageData方法，我们继续往下看：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">invalidatePageData</span><span class="params">(<span class="keyword">int</span> currentPage, <span class="keyword">boolean</span> immediateAndOnly)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (!mIsDataReady) &#123;</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (mContentIsRefreshable) &#123;</span><br><span class="line">           <span class="comment">// Force all scrolling-related behavior to end</span></span><br><span class="line">           mScroller.forceFinished(<span class="keyword">true</span>);</span><br><span class="line">           mNextPage = INVALID_PAGE;</span><br><span class="line"></span><br><span class="line">           <span class="comment">// Update all the pages</span></span><br><span class="line">           syncPages();</span><br><span class="line"></span><br><span class="line">           <span class="comment">// We must force a measure after we've loaded the pages to update the content width and</span></span><br><span class="line">           <span class="comment">// to determine the full scroll width</span></span><br><span class="line">           measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY),</span><br><span class="line">                   MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.EXACTLY));</span><br><span class="line"></span><br><span class="line">           <span class="comment">// Set a new page as the current page if necessary</span></span><br><span class="line">           <span class="keyword">if</span> (currentPage &gt; -<span class="number">1</span>) &#123;</span><br><span class="line">               setCurrentPage(Math.min(getPageCount() - <span class="number">1</span>, currentPage));</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="comment">// Mark each of the pages as dirty</span></span><br><span class="line">           <span class="keyword">final</span> <span class="keyword">int</span> count = getChildCount();</span><br><span class="line">           mDirtyPageContent.clear();</span><br><span class="line">           <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; ++i) &#123;</span><br><span class="line">               mDirtyPageContent.add(<span class="keyword">true</span>);</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="comment">// Load any pages that are necessary for the current window of views</span></span><br><span class="line">           <span class="comment">//关键代码，这里会加载桌面View</span></span><br><span class="line">           loadAssociatedPages(mCurrentPage, immediateAndOnly);</span><br><span class="line">           requestLayout();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//加载桌面程序icons等</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">loadAssociatedPages</span><span class="params">(<span class="keyword">int</span> page, <span class="keyword">boolean</span> immediateAndOnly)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (mContentIsRefreshable) &#123;</span><br><span class="line">           <span class="keyword">final</span> <span class="keyword">int</span> count = getChildCount();</span><br><span class="line">           <span class="keyword">if</span> (page &lt; count) &#123;</span><br><span class="line">               <span class="keyword">int</span> lowerPageBound = getAssociatedLowerPageBound(page);</span><br><span class="line">               <span class="keyword">int</span> upperPageBound = getAssociatedUpperPageBound(page);</span><br><span class="line">               <span class="comment">// First, clear any pages that should no longer be loaded</span></span><br><span class="line">               <span class="comment">//先做一些清理工作，这里涉及到view重用机制，不再讲解了</span></span><br><span class="line">               <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; ++i) &#123;</span><br><span class="line">                   Page layout = (Page) getPageAt(i);</span><br><span class="line">                   <span class="keyword">if</span> ((i &lt; lowerPageBound) || (i &gt; upperPageBound)) &#123;</span><br><span class="line">                       <span class="keyword">if</span> (layout.getPageChildCount() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                           layout.removeAllViewsOnPage();</span><br><span class="line">                       &#125;</span><br><span class="line">                       mDirtyPageContent.set(i, <span class="keyword">true</span>);</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="comment">// Next, load any new pages</span></span><br><span class="line">               <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; ++i) &#123;</span><br><span class="line">                   <span class="keyword">if</span> ((i != page) &amp;&amp; immediateAndOnly) &#123;</span><br><span class="line">                       <span class="keyword">continue</span>;</span><br><span class="line">                   &#125;</span><br><span class="line">                   <span class="comment">//找到当前页面对应的Page，然后调用syncPageItems，这个函数里面就是向桌面上添加views组件</span></span><br><span class="line">                   <span class="keyword">if</span> (lowerPageBound &lt;= i &amp;&amp; i &lt;= upperPageBound) &#123;</span><br><span class="line">                       <span class="keyword">if</span> (mDirtyPageContent.get(i)) &#123;</span><br><span class="line">                           syncPageItems(i, (i == page) &amp;&amp; immediateAndOnly);</span><br><span class="line">                           mDirtyPageContent.set(i, <span class="keyword">false</span>);</span><br><span class="line">                       &#125;</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>Ok，上面的代码里面，我已经做了注释，讲的比较清楚了，我们直接跳到<strong>syncPageItems</strong>方法里面看下它做的操作，这个函数里面就是往桌面上添加view，就像我们平常往ViewGrounp里面addView一样，比较好理解了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">syncPageItems</span><span class="params">(<span class="keyword">int</span> page, <span class="keyword">boolean</span> immediate)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (page &lt; mNumAppsPages) &#123;</span><br><span class="line">           syncAppsPageItems(page, immediate);</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           syncWidgetPageItems(page, immediate);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">syncAppsPageItems</span><span class="params">(<span class="keyword">int</span> page, <span class="keyword">boolean</span> immediate)</span> </span>&#123;</span><br><span class="line">       <span class="comment">// ensure that we have the right number of items on the pages</span></span><br><span class="line">       <span class="keyword">final</span> <span class="keyword">boolean</span> isRtl = isLayoutRtl();</span><br><span class="line">       <span class="keyword">int</span> numCells = mCellCountX * mCellCountY;</span><br><span class="line">       <span class="keyword">int</span> startIndex = page * numCells;</span><br><span class="line">       <span class="keyword">int</span> endIndex = Math.min(startIndex + numCells, mApps.size());</span><br><span class="line">       PagedViewCellLayout layout = (PagedViewCellLayout) getPageAt(page);</span><br><span class="line"></span><br><span class="line">       layout.removeAllViewsOnPage();</span><br><span class="line">       ArrayList&lt;Object&gt; items = <span class="keyword">new</span> ArrayList&lt;Object&gt;();</span><br><span class="line">       ArrayList&lt;Bitmap&gt; images = <span class="keyword">new</span> ArrayList&lt;Bitmap&gt;();</span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">int</span> i = startIndex; i &lt; endIndex; ++i) &#123;</span><br><span class="line">           ApplicationInfo info = mApps.get(i);</span><br><span class="line">           PagedViewIcon icon = (PagedViewIcon) mLayoutInflater.inflate(</span><br><span class="line">                   R.layout.apps_customize_application, layout, <span class="keyword">false</span>);</span><br><span class="line">           icon.applyFromApplicationInfo(info, <span class="keyword">true</span>, <span class="keyword">this</span>);</span><br><span class="line">           icon.setOnClickListener(<span class="keyword">this</span>);</span><br><span class="line">           icon.setOnLongClickListener(<span class="keyword">this</span>);</span><br><span class="line">           icon.setOnTouchListener(<span class="keyword">this</span>);</span><br><span class="line">           icon.setOnKeyListener(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">           <span class="keyword">int</span> index = i - startIndex;</span><br><span class="line">           <span class="keyword">int</span> x = index % mCellCountX;</span><br><span class="line">           <span class="keyword">int</span> y = index / mCellCountX;</span><br><span class="line">           <span class="keyword">if</span> (isRtl) &#123;</span><br><span class="line">               x = mCellCountX - x - <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           layout.addViewToCellLayout(icon, -<span class="number">1</span>, i, <span class="keyword">new</span> PagedViewCellLayout.LayoutParams(x,y, <span class="number">1</span>,<span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">           items.add(info);</span><br><span class="line">           images.add(info.iconBitmap);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       enableHwLayersOnVisiblePages();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后从mApps对象里面取出所有的app信息，并添加点击事件，将App图标添加到桌面上，这时我们就可以在onClick回掉中找到启动app的代码了，具体如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// When we have exited all apps or are in transition, disregard clicks</span></span><br><span class="line">    <span class="keyword">if</span> (!mLauncher.isAllAppsVisible() ||</span><br><span class="line">            mLauncher.getWorkspace().isSwitchingState()) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (v <span class="keyword">instanceof</span> PagedViewIcon) &#123;</span><br><span class="line">        <span class="comment">// Animate some feedback to the click</span></span><br><span class="line">        <span class="keyword">final</span> ApplicationInfo appInfo = (ApplicationInfo) v.getTag();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Lock the drawable state to pressed until we return to Launcher</span></span><br><span class="line">        <span class="comment">//这里锁定app点击，防止二次点击启动2个app程序</span></span><br><span class="line">        <span class="keyword">if</span> (mPressedIcon != <span class="keyword">null</span>) &#123;</span><br><span class="line">            mPressedIcon.lockDrawableState();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// <span class="doctag">NOTE:</span> We want all transitions from launcher to act as if the wallpaper were enabled</span></span><br><span class="line">        <span class="comment">// to be consistent.  So re-enable the flag here, and we will re-disable it as necessary</span></span><br><span class="line">        <span class="comment">// when Launcher resumes and we are still in AllApps.</span></span><br><span class="line">        mLauncher.updateWallpaperVisibility(<span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">//最后调用launcher里面的startActivitySafely方法，这里就启动了app</span></span><br><span class="line">        mLauncher.startActivitySafely(v, appInfo.intent, appInfo);</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (v <span class="keyword">instanceof</span> PagedViewWidget) &#123;</span><br><span class="line">        <span class="comment">// Let the user know that they have to long press to add a widget</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="王洋 wechat" style="width: 200px; max-width: 100%;">
+    <div>我的微信号，欢迎交流~</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Launcher/" rel="tag">#Launcher</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/26/multidex原理解析/" rel="next" title="Multidex拆分包原理解析">
+                <i class="fa fa-chevron-left"></i> Multidex拆分包原理解析
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/09/ReactNative编译到运行的坑/" rel="prev" title="ReactNative编译到运行的坑">
+                ReactNative编译到运行的坑 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/31/App启动流程分析/" data-title="Launcher启动流程分析（一）" data-url="http://blog.hackyang.cn/2016/08/31/App启动流程分析/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://avatars1.githubusercontent.com/u/3038374?v=3&s=460" alt="王洋">
+          <p class="site-author-name" itemprop="name">王洋</p>
+          <p class="site-description motion-element" itemprop="description">我真的想让这个世界变得更好，但是他们不给我源代码……</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wy353208214" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/wangyang1989325" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Launcher分析"><span class="nav-number">1.</span> <span class="nav-text">Launcher分析</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王洋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv"> 本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kitkat"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Sb3RSVDF7jyxciT13l5qMtjL-gzGzoHsz", "sw4QAmE49mU8F9fnpmY9CdiW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

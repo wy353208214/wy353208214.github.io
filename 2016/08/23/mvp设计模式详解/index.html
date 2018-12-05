@@ -1,0 +1,867 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Android,ios,mvp,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="王洋" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="为什么需要软件设计模式？我们先来定义什么是好的软件架构：  软件架构上具有明确的分工，各个模块的功能职责平衡分配，且明确。 可测试性，通常良好的软件架构都具备良好的可测试性。 良好的易用性，维护成本低。   为什么需要模块分工？良好的模块分工，可以大大简化我们对代码的理解难度。虽然通过大量的开发工作，可以训练我们的大脑去分析越来越复杂的逻辑，但是人总有极限，而且简单的逻辑更容易理解、不容易出错，所">
+<meta name="keywords" content="Android,ios,mvp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mvp软件设计模式分析">
+<meta property="og:url" content="http://blog.hackyang.cn/2016/08/23/mvp设计模式详解/index.html">
+<meta property="og:site_name" content="王洋">
+<meta property="og:description" content="为什么需要软件设计模式？我们先来定义什么是好的软件架构：  软件架构上具有明确的分工，各个模块的功能职责平衡分配，且明确。 可测试性，通常良好的软件架构都具备良好的可测试性。 良好的易用性，维护成本低。   为什么需要模块分工？良好的模块分工，可以大大简化我们对代码的理解难度。虽然通过大量的开发工作，可以训练我们的大脑去分析越来越复杂的逻辑，但是人总有极限，而且简单的逻辑更容易理解、不容易出错，所">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1858247-f517d209e937a435.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1858247-57db1c3f3fa9380d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://github.com/googlesamples/android-architecture/wiki/images/mvp-clean.png">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1858247-880d79faaa1e27b8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1858247-6db3d94abc02b9dc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1858247-eef3002b1318feac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-12-05T01:15:48.266Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mvp软件设计模式分析">
+<meta name="twitter:description" content="为什么需要软件设计模式？我们先来定义什么是好的软件架构：  软件架构上具有明确的分工，各个模块的功能职责平衡分配，且明确。 可测试性，通常良好的软件架构都具备良好的可测试性。 良好的易用性，维护成本低。   为什么需要模块分工？良好的模块分工，可以大大简化我们对代码的理解难度。虽然通过大量的开发工作，可以训练我们的大脑去分析越来越复杂的逻辑，但是人总有极限，而且简单的逻辑更容易理解、不容易出错，所">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1858247-f517d209e937a435.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6321919226709804000,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://blog.hackyang.cn/2016/08/23/mvp设计模式详解/">
+
+  <title> Mvp软件设计模式分析 | 王洋 </title>
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">王洋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Kitkat</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Mvp软件设计模式分析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-23T20:14:41+08:00" content="2016-08-23">
+              2016-08-23
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/23/mvp设计模式详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/23/mvp设计模式详解/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/08/23/mvp设计模式详解/" class="leancloud_visitors" data-flag-title="Mvp软件设计模式分析">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="为什么需要软件设计模式？"><a href="#为什么需要软件设计模式？" class="headerlink" title="为什么需要软件设计模式？"></a>为什么需要软件设计模式？</h4><h5 id="我们先来定义什么是好的软件架构："><a href="#我们先来定义什么是好的软件架构：" class="headerlink" title="我们先来定义什么是好的软件架构："></a>我们先来定义什么是好的软件架构：</h5><blockquote>
+<ol>
+<li>软件架构上具有明确的分工，各个模块的功能职责平衡分配，且明确。</li>
+<li>可测试性，通常良好的软件架构都具备良好的可测试性。</li>
+<li>良好的易用性，维护成本低。</li>
+</ol>
+</blockquote>
+<h6 id="为什么需要模块分工？"><a href="#为什么需要模块分工？" class="headerlink" title="为什么需要模块分工？"></a>为什么需要模块分工？</h6><p>良好的模块分工，可以大大简化我们对代码的理解难度。虽然通过大量的开发工作，可以训练我们的大脑去分析越来越复杂的逻辑，但是人总有极限，而且简单的逻辑更容易理解、不容易出错，所以，遵循单一职责原则，将复杂的业务逻辑分解。<br><a id="more"></a></p>
+<h6 id="为什么需要良好的可测试性？"><a href="#为什么需要良好的可测试性？" class="headerlink" title="为什么需要良好的可测试性？"></a>为什么需要良好的可测试性？</h6><p>对于深知单元测试好处的开发者来说，这并不是一个问题。单元测试可以大大地减少程序运行时才能发现的问题，这通常可以节省「用户反馈」-&gt;「Bug修复」-&gt;「新版本发布」-&gt;「用户安装新版本」这个耗时长达一周以上的过程。所以，程序的可测试性对于程序的稳定性是异常重要的。</p>
+<h6 id="为什么需要良好的易用性？"><a href="#为什么需要良好的易用性？" class="headerlink" title="为什么需要良好的易用性？"></a>为什么需要良好的易用性？</h6><p>毋庸置疑，最好的代码是还没被写出来的代码。因此，越少的代码，意味着越少的 bugs。这也意味着尽量以最少的代码实现相同的功能，并非意味着这个开发者懒惰，同时，也不能不看维护成本而盲目赞同一个看似聪明的方案。</p>
+<hr>
+<h4 id="二-什么是MVP架构？"><a href="#二-什么是MVP架构？" class="headerlink" title="二.什么是MVP架构？"></a>二.什么是MVP架构？</h4><p><strong>MVP</strong>是单词<strong>Model View Presenter</strong>的首字母的缩写，分别表示数据层、视图层、发布层，它是MVC架构的一种演变。作为一种新的模式，MVP与MVC有着一个重大的区别：在MVP中View并不直接使用Model，它们之间的通信是通过Presenter (MVC中的Controller)来进行的，所有的交互都发生在Presenter内部，而在MVC中View会直接从Model中读取数据而不是通过 Controller。<br>首先我们先看下传统的MVC架构Model View Controller，我们把业务逻辑放到C层（ios的<strong>ViewController</strong>,android的<strong>Activity&amp;Fragment</strong>），但是这里会引入另外一个问题，所有的逻辑都在C层，不可避免的会造成C层非常复杂，如果项目越来越大，C层的代码会更加臃肿，维护起来也非常麻烦，而且也没办法==简单的==做单元测试，试想做一个单元测试我们要加入多少逻辑代码？<br><img src="http://upload-images.jianshu.io/upload_images/1858247-f517d209e937a435.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>综上所述我们总结下，现有的MVC模式存在以下问题：</p>
+<ol>
+<li><p><strong>视图与控制器间的过于紧密的连接</strong></p>
+<blockquote>
+<p>视图与控制器是相互分离，但却是联系紧密的部件，视图没有控制器的存在，其应用是很有限的，反之亦然，这样就妨碍了他们的独立重用。</p>
+</blockquote>
+</li>
+<li><p><strong>视图对模型数据的低效率访问</strong></p>
+<blockquote>
+<p>依据模型操作接口的不同，视图可能需要多次调用才能获得足够的显示数据。对未变化数据的不必要的频繁访问，也将损害操作性能。</p>
+</blockquote>
+</li>
+<li><p><strong>不太友好的单元测试</strong></p>
+<blockquote>
+<p>特别是App上做单元测试的时候很多东西依赖与系统框架，没法脱离用户接口来测试这些逻辑单元。使用MVP对Presenter的测试–不需要使用自动化的测试工具。 我们可以在Model和View都没有完成时候，就可以通过编写Mock Object（即实现了Model和View的接口，但没有具体的内容的）来测试Presenter的逻辑。</p>
+</blockquote>
+</li>
+</ol>
+<p>基于以上几点问题，就衍生了出了一些软件设计模式如MVP，MVVW。为什么是MVP？我们先看下面这张图</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1858247-57db1c3f3fa9380d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<ol>
+<li><p>MVP分离了view和model层，Presenter层充当了桥梁的角色，View层只负责更新界面即可，这里的View我们要明白只是一个viewinterface，它是视图的接口，这样我们在做单元测试的时候可以非常方便编写Presenter层代码。关于mvp的代码测试，我们可以参考google给出的代码，google现在也在推行mvp，为此google发布了一些案例，大家可参考这里<a href="https://github.com/googlesamples/android-architecture" target="_blank" rel="noopener">android-architecture</a><br><img src="https://github.com/googlesamples/android-architecture/wiki/images/mvp-clean.png" alt=""></p>
+</li>
+<li><p>厚重的Controller层代码也得到了释放，之前我们开发的时候会对UIViewController、Activity、Fragment编写很多的业务逻辑，尽管大家会将Service层做分离，如net层，DB层等，但还是无法避免类似的问题，activity uicontroller无法重复利用是非常难以忍受的。</p>
+</li>
+<li>有一点还需要注意，presenter是双向绑定的关系，因此，在设计的时候就要注意接口和抽象的使用，尽可能的降低代码的耦合度，这也是mvp的宗旨。</li>
+</ol>
+<p><strong>so，转向mvp吧！我们先看下MVP几个单词的意思，以下是我个人的理解：</strong></p>
+<ul>
+<li><strong>View</strong>: 是显示数据（model）并且将用户指令（events）传送到presenter以便作用于那些数据的一个接口。View通常含有Presenter的引用。在Android开发中通常将Activity或者Fragment作为View层。</li>
+<li><strong>Model</strong>: 对于Model层也是数据层。它区别于MVC架构中的Model，在这里不仅仅只是数据模型。在MVP架构中Model它负责对数据的存取操作，例如对数据库的读写，网络的数据的请求等。</li>
+<li><strong>Presenter</strong>:对于Presenter层他是连接View层与Model层的桥梁并对业务逻辑进行处理。在MVP架构中Model与View无法直接进行交互。所以在Presenter层它会从Model层获得所需要的数据，进行一些适当的处理后交由View层进行显示。这样通过Presenter将View与Model进行隔离，使得View和Model之间不存在耦合，同时也将业务逻辑从View中抽离。</li>
+</ul>
+<h4 id="三-实例"><a href="#三-实例" class="headerlink" title="三.实例"></a>三.实例</h4><p>接下来我们看一个使用的用例吧，这个demo相对来说非常简单，下面是项目的架构，一个Activity，一个Fragment，Data层主要负责获取App已安装的应用列表，AppListPresenter负责业务逻辑处理</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1858247-880d79faaa1e27b8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>我们先看下presenter，viewinterface的结构</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1858247-6db3d94abc02b9dc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><img src="http://upload-images.jianshu.io/upload_images/1858247-eef3002b1318feac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="">!</p>
+<ul>
+<li>AppListFragment的代码<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppListFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> <span class="keyword">implements</span> <span class="title">AppViewInterface</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">private</span> Presenter presenter;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">private</span> List&lt;PackageInfo&gt; packageInfoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">      <span class="keyword">private</span> RecyclerView recyclerView;</span><br><span class="line">      <span class="keyword">private</span> MyAppListRecyclerViewAdapter myAppListRecyclerViewAdapter;</span><br><span class="line"></span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showAppList</span><span class="params">(List&lt;PackageInfo&gt; packageInfos)</span> </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (packageInfos.isEmpty())</span><br><span class="line">              <span class="keyword">return</span>;</span><br><span class="line">          packageInfoList.clear();</span><br><span class="line">          packageInfoList.addAll(packageInfos);</span><br><span class="line">          myAppListRecyclerViewAdapter.notifyDataSetChanged();</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPresenter</span><span class="params">(Presenter presenter)</span> </span>&#123;</span><br><span class="line">          <span class="keyword">this</span>.presenter = presenter;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>代码比较容易理解，AppListFragment实现了AppViewInterface接口，我们需要在Activity中把AppListPresenter和AppViewInterface双向绑定。</p>
+<ul>
+<li>接下来看下AppListPresenter层的代码，这里只列出了几个关键方法<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppListPresenter</span> <span class="keyword">implements</span> <span class="title">Presenter</span>, <span class="title">LoaderManager</span>.<span class="title">LoaderCallbacks</span>&lt;<span class="title">List</span>&lt;<span class="title">PackageInfo</span>&gt;&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">private</span> AppViewInterface viewInterface;</span><br><span class="line">       <span class="keyword">private</span> AppClassLoader appClassLoader;</span><br><span class="line">       <span class="keyword">private</span> LoaderManager loaderManager;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> id = <span class="number">0</span>;</span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">AppListPresenter</span><span class="params">(AppViewInterface viewInterface, AppClassLoader appClassLoader, </span></span></span><br><span class="line"><span class="function"><span class="params">       				LoaderManager loaderManager)</span> </span>&#123;</span><br><span class="line">           <span class="keyword">this</span>.viewInterface = viewInterface;</span><br><span class="line">           <span class="keyword">this</span>.appClassLoader = appClassLoader;</span><br><span class="line">           <span class="keyword">this</span>.loaderManager = loaderManager;</span><br><span class="line">           viewInterface.setPresenter(<span class="keyword">this</span>);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="meta">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadInstallApps</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       	<span class="comment">//通过loadmanager提供的方法获取安装的应用列表</span></span><br><span class="line">           loaderManager.initLoader(id, <span class="keyword">null</span>, <span class="keyword">this</span>);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="meta">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">           loaderManager.destroyLoader(id);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="meta">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoadFinished</span><span class="params">(Loader&lt;List&lt;PackageInfo&gt;&gt; loader, List&lt;PackageInfo&gt; data)</span> </span>&#123;</span><br><span class="line">       	<span class="comment">//获取到已安装的应用列表，调用AppViewInterface的showAppList方法</span></span><br><span class="line">           viewInterface.showAppList(data);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="meta">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">launchApp</span><span class="params">(PackageInfo packageInfo)</span> </span>&#123;</span><br><span class="line">           Intent intent = appClassLoader.queryLaunchIntent(packageInfo);</span><br><span class="line">           <span class="keyword">if</span> (intent != <span class="keyword">null</span>)</span><br><span class="line">               appClassLoader.getContext().startActivity(intent);</span><br><span class="line">           <span class="keyword">else</span></span><br><span class="line">               Toast.makeText(appClassLoader.getContext(), <span class="string">"Can not start the app"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>关键方法是loadInstallApps，这个方法在MainActivity的onCreat中调用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Presenter appListPresenter;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line"></span><br><span class="line">       setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);</span><br><span class="line">       setSupportActionBar(toolbar);</span><br><span class="line"></span><br><span class="line">       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();</span><br><span class="line">       AppListFragment appListFragment = AppListFragment.newInstance();</span><br><span class="line">       fragmentTransaction.add(R.id.fm, appListFragment);</span><br><span class="line">       fragmentTransaction.commit();</span><br><span class="line"></span><br><span class="line">       appListPresenter = <span class="keyword">new</span> AppListPresenter(appListFragment, <span class="keyword">new</span> AppClassLoader(getApplicationContext()), </span><br><span class="line">       									getSupportLoaderManager());</span><br><span class="line">	<span class="comment">//调用loadInstallApps</span></span><br><span class="line">       appListPresenter.loadInstallApps();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先，我们获取一个AppListFragment的实例，在AppListPresenter构造函数里面我们传入AppViewInterface，同时在AppPresenter的构造函数中又将presenter注入到了AppViewInerface里面，这样就实现了Presenter和ViewInerface双向绑定，之后调用AppPresenter的loadInstallApps方法，在onLoadFinished回调里面又调用了AppViewInterface的showApps方法，这样数据就显示在界面。整个Activity和Fragment的代码精简了很多。</p>
+<p>####四.缺点<br>由于对视图的渲染放在了Presenter中，所以视图和Presenter的交互会过于频繁。还有一点需要明白，如果Presenter过多地渲染了视图，往往会使得它与特定的视图的联系过于紧密。一旦视图需要变更，那么Presenter也需要变更了</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="王洋 wechat" style="width: 200px; max-width: 100%;">
+    <div>我的微信号，欢迎交流~</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/ios/" rel="tag">#ios</a>
+          
+            <a href="/tags/mvp/" rel="tag">#mvp</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/26/multidex原理解析/" rel="prev" title="Multidex拆分包原理解析">
+                Multidex拆分包原理解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/23/mvp设计模式详解/" data-title="Mvp软件设计模式分析" data-url="http://blog.hackyang.cn/2016/08/23/mvp设计模式详解/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://avatars1.githubusercontent.com/u/3038374?v=3&s=460" alt="王洋">
+          <p class="site-author-name" itemprop="name">王洋</p>
+          <p class="site-description motion-element" itemprop="description">我真的想让这个世界变得更好，但是他们不给我源代码……</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wy353208214" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/wangyang1989325" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么需要软件设计模式？"><span class="nav-number">1.</span> <span class="nav-text">为什么需要软件设计模式？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#我们先来定义什么是好的软件架构："><span class="nav-number">1.1.</span> <span class="nav-text">我们先来定义什么是好的软件架构：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#为什么需要模块分工？"><span class="nav-number">1.1.1.</span> <span class="nav-text">为什么需要模块分工？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#为什么需要良好的可测试性？"><span class="nav-number">1.1.2.</span> <span class="nav-text">为什么需要良好的可测试性？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#为什么需要良好的易用性？"><span class="nav-number">1.1.3.</span> <span class="nav-text">为什么需要良好的易用性？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二-什么是MVP架构？"><span class="nav-number">2.</span> <span class="nav-text">二.什么是MVP架构？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三-实例"><span class="nav-number">3.</span> <span class="nav-text">三.实例</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王洋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv"> 本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kitkat"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Sb3RSVDF7jyxciT13l5qMtjL-gzGzoHsz", "sw4QAmE49mU8F9fnpmY9CdiW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

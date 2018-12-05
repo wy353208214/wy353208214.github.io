@@ -1,0 +1,914 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="王洋" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="数据结构算法学习笔记（一）一、树树的储存结构分3种  双亲表示法根结点外，其余每个结点，它不一定有孩子，但是一定有且仅有一个双亲。我们假设以一组连续空间存储树的结点，同时在每个结点中，附设一个指示器指示其双亲结点在数组中的位置。也就是说，每个结点除了知道自己是谁以外，还知道它的双亲在哪里以下是我们的双亲表示法的结点结构定义代码。 1234567891011121314151617181920/*">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构算法学习笔记（一）">
+<meta property="og:url" content="http://blog.hackyang.cn/2017/09/12/数据结构学习笔记（一）/index.html">
+<meta property="og:site_name" content="王洋">
+<meta property="og:description" content="数据结构算法学习笔记（一）一、树树的储存结构分3种  双亲表示法根结点外，其余每个结点，它不一定有孩子，但是一定有且仅有一个双亲。我们假设以一组连续空间存储树的结点，同时在每个结点中，附设一个指示器指示其双亲结点在数组中的位置。也就是说，每个结点除了知道自己是谁以外，还知道它的双亲在哪里以下是我们的双亲表示法的结点结构定义代码。 1234567891011121314151617181920/*">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://68.media.tumblr.com/1cb70425142c9b8998c0ad5f96515413/tumblr_ow5tibQel91strv3do2_r1_400.png">
+<meta property="og:image" content="http://erqi.github.io/images/%E4%BA%8C%E5%8F%89%E6%A0%91/%E6%BB%A1%E4%BA%8C%E5%8F%89%E6%A0%91.png">
+<meta property="og:image" content="http://www.manonggu.com/kecheng/UploadFile/UeImg/Knowledge/20151124/6358396256159698411806630.jpg">
+<meta property="og:image" content="http://7xospc.com1.z0.glb.clouddn.com/6-5-6.jpg">
+<meta property="og:image" content="https://68.media.tumblr.com/7722823defbe91333ad13a056ad9b43c/tumblr_ow5tibQel91strv3do1_1280.png">
+<meta property="og:updated_time" content="2018-12-05T01:15:48.267Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据结构算法学习笔记（一）">
+<meta name="twitter:description" content="数据结构算法学习笔记（一）一、树树的储存结构分3种  双亲表示法根结点外，其余每个结点，它不一定有孩子，但是一定有且仅有一个双亲。我们假设以一组连续空间存储树的结点，同时在每个结点中，附设一个指示器指示其双亲结点在数组中的位置。也就是说，每个结点除了知道自己是谁以外，还知道它的双亲在哪里以下是我们的双亲表示法的结点结构定义代码。 1234567891011121314151617181920/*">
+<meta name="twitter:image" content="https://68.media.tumblr.com/1cb70425142c9b8998c0ad5f96515413/tumblr_ow5tibQel91strv3do2_r1_400.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6321919226709804000,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://blog.hackyang.cn/2017/09/12/数据结构学习笔记（一）/">
+
+  <title> 数据结构算法学习笔记（一） | 王洋 </title>
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">王洋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Kitkat</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                数据结构算法学习笔记（一）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-12T20:34:03+08:00" content="2017-09-12">
+              2017-09-12
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/09/12/数据结构学习笔记（一）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/12/数据结构学习笔记（一）/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/09/12/数据结构学习笔记（一）/" class="leancloud_visitors" data-flag-title="数据结构算法学习笔记（一）">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="数据结构算法学习笔记（一）"><a href="#数据结构算法学习笔记（一）" class="headerlink" title="数据结构算法学习笔记（一）"></a>数据结构算法学习笔记（一）</h4><h5 id="一、树"><a href="#一、树" class="headerlink" title="一、树"></a>一、树</h5><p>树的储存结构分3种</p>
+<ol>
+<li><p>双亲表示法<br>根结点外，其余每个结点，它不一定有孩子，但是一定有且仅有一个双亲。我们假设以一组连续空间存储树的结点，同时在每个结点中，附设一个指示器指示其双亲结点在数组中的位置。也就是说，每个结点除了知道自己是谁以外，还知道它的双亲在哪里<br>以下是我们的双亲表示法的结点结构定义代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 树的双亲表示法结点结构定义 */</span></span><br><span class="line">define MAX_TREE_SIZE <span class="number">100</span></span><br><span class="line"><span class="comment">/* 树结点的数据类型，目前暂定为整型 */</span></span><br><span class="line">typedef <span class="keyword">int</span> TElemType;              </span><br><span class="line"><span class="comment">/* 结点结构 */</span></span><br><span class="line">typedef struct PTNode               </span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* 结点数据 */</span></span><br><span class="line">    TElemType data;                 </span><br><span class="line">    <span class="comment">/* 双亲位置 */</span></span><br><span class="line">    <span class="keyword">int</span> parent;                     </span><br><span class="line">&#125; PTNode;</span><br><span class="line"><span class="comment">/* 树结构 */</span></span><br><span class="line">typedef struct                      </span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* 结点数组 */</span></span><br><span class="line">    PTNode nodes[MAX_TREE_SIZE];    </span><br><span class="line">    <span class="comment">/* 根的位置和结点数 */</span></span><br><span class="line">    <span class="keyword">int</span> r, n;                       </span><br><span class="line">&#125; PTree;</span><br></pre></td></tr></table></figure>
+<p> 在此基础上我们可以改进下树的结构，增加一个结点最左边孩子的域，不妨叫它长子域，这样就可以很容易得到结点的孩子。如果没有孩子的结点，这个长子域就设置为-1，如下表格</p>
+<a id="more"></a>
+<p><img src="https://68.media.tumblr.com/1cb70425142c9b8998c0ad5f96515413/tumblr_ow5tibQel91strv3do2_r1_400.png" alt=""></p>
+</li>
+<li><p>孩子表示法<br>换一种完全不同的考虑方法。由于树中每个结点可能有多棵子树，可以考虑用多重链表，即每个结点有多个指针域，其中每个指针指向一棵子树的根结点，我们把这种方法叫做多重链表表示法。不过，树的每个结点的度，也就是它的孩子个数是不同的。所以可以设计两种方案来解决</p>
+<blockquote>
+<p>我们为了要遍历整棵树，把每个结点放到一个顺序存储结构的数组中是合理的，但每个结点的孩子有多少是不确定的，所以我们再对每个结点的孩子建立一个单链表体现它们的关系</p>
+<p>这就是我们要讲的孩子表示法。具体办法是，把每个结点的孩子结点排列起来，以单链表作存储结构，则n个结点有n个孩子链表，如果是叶子结点则此单链表为空。然后n个头指针又组成一个线性表，采用顺序存储结构，存放进一个一维数组中</p>
+</blockquote>
+</li>
+<li><p>孩子兄弟表示法<br>刚才我们分别从双亲的角度和从孩子的角度研究树的存储结构，如果我们从树结点的兄弟的角度考虑又会如何呢？当然，对于树这样的层级结构来说，只研究结点的兄弟是不行的，我们观察后发现，任意一棵树，它的结点的第一个孩子如果存在就是唯一的，它的右兄弟如果存在也是唯一的。因此，我们设置两个指针，分别指向该结点的第一个孩子和此结点的右兄弟。</p>
+</li>
+</ol>
+<hr>
+<h5 id="二、二叉树"><a href="#二、二叉树" class="headerlink" title="二、二叉树"></a>二、二叉树</h5><p>二叉树特点</p>
+<ul>
+<li>每个结点最多有两棵子树，所以二叉树中不存在度大于2的结点。注意不是只有两棵子树，而是最多有。没有子树或者有一棵子树都是可以的。</li>
+<li>左子树和右子树是有顺序的，次序不能任意颠倒。就像人有双手、双脚，但显然左手、左脚和右手、右脚是不一样的，右手戴左手套、右脚穿左鞋都会极其别扭和难受。</li>
+<li>即使树中某结点只有一棵子树，也要区分它是左子树还是右子树。图6-5-3中，树1和树2是同一棵树，但它们却是不同的二叉树。就好像你一不小心，摔伤了手，伤的是左手还是右手，对你的生活影响度是完全不同的。</li>
+</ul>
+<hr>
+<p>二叉树分类：</p>
+<ol>
+<li><strong>斜树：</strong>斜树一定要是斜的，但是往哪斜还是有讲究。所有的结点都只有左子树的二叉树叫左斜树。所有结点都是只有右子树的二叉树叫右斜树。这两者统称为斜树。斜树有很明显的特点，就是每一层都只有一个结点，结点的个数与二叉树的深度相同。</li>
+<li><p><strong>满二叉树：</strong>在一棵二叉树中，如果所有分支结点都存在左子树和右子树，并且所有叶子都在同一层上，这样的二叉树称为满二叉树。</p>
+<blockquote>
+<p>单是每个结点都存在左右子树，不能算是满二叉树，还必须要所有的叶子都在同一层上，这就做到了整棵树的平衡。</p>
+</blockquote>
+<p> <em>满二叉树具有以下特点：</em></p>
+<ul>
+<li>叶子只能出现在最下一层。出现在其他层就不可能达成平衡</li>
+<li>非叶子结点的度一定是2。否则就是“缺胳膊少腿”了</li>
+<li><p>在同样深度的二叉树中，满二叉树的结点个数最多，叶子数最多</p>
+<p><img src="http://erqi.github.io/images/%E4%BA%8C%E5%8F%89%E6%A0%91/%E6%BB%A1%E4%BA%8C%E5%8F%89%E6%A0%91.png" alt=""></p>
+</li>
+</ul>
+</li>
+<li><p><strong>完全二叉树：</strong>对一棵具有n个结点的二叉树按层序编号，如果编号为i（1≤i≤n）的结点与同样深度的满二叉树中编号为i的结点在二叉树中位置完全相同，则这棵二叉树称为完全二叉树。<br> <em>完全二叉树的特点：</em></p>
+<ul>
+<li>叶子结点只能出现在最下两层</li>
+<li>最下层的叶子一定集中在左部连续位置</li>
+<li>倒数二层，若有叶子结点，一定都在右部连续位置</li>
+<li>如果结点度为1，则该结点只有左孩子，即不存在只有右子树的情况</li>
+<li>同样结点数的二叉树，完全二叉树的深度最小<br><img src="http://www.manonggu.com/kecheng/UploadFile/UeImg/Knowledge/20151124/6358396256159698411806630.jpg" alt=""><br>上图只有图1、3是完全二叉树</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>二叉树性质</p>
+<ol>
+<li>在二叉树的第i层上至多有2i-1个结点（i≥1）</li>
+<li>深度为k的二叉树至多有2k-1个结点（k≥1）</li>
+<li>对任何一棵二叉树T，如果其终端结点数为n0，度为2的结点数为n2，则n0=n2+1</li>
+<li>具有n个结点的完全二叉树的深度为|log2n+1|（|x|表示不大于x的最大整数，由性质2反推</li>
+<li><p>如果对一棵有n个结点的完全二叉树（其深度为）的结点按层序编号（从第1层到第层，每层从左到右），对任一结点i（1≤i≤n）有：</p>
+<blockquote>
+<p>1.如果i=1，则结点i是二叉树的根，无双亲；如果i&gt;1，则其双亲是结点<br>2.如果2i&gt;n，则结点i无左孩子（结点i为叶子结点）；否则其左孩子是结点2i<br>3.如果2i+1&gt;n，则结点i无右孩子；否则其右孩子是结点2i+1）</p>
+</blockquote>
+<p> 我们以下图为例，来理解这个性质。这是一个完全二叉树，深度为4，结点总数是10。<br> <img src="http://7xospc.com1.z0.glb.clouddn.com/6-5-6.jpg" alt=""><br> 对于第一条来说是很显然的，i=1时就是根结点。i&gt;1时，比如结点7，它的双亲就是，结点9，它的双亲就是。</p>
+<p> 第二条，比如结点6，因为2×6=12超过了结点总数10，所以结点6无左孩子，它是叶子结点。同样，而结点5，因为2×5=10正好是结点总数10，所以它的左孩子是结点10。</p>
+<p> 第三条，比如结点5，因为2×5+1=11，大于结点总数10，所以它无右孩子。而结点3，因为2×3+1=7小于10，所以它的右孩子是结点7。</p>
+</li>
+</ol>
+<hr>
+<p>二叉树存储结构</p>
+<ol>
+<li>二叉树顺序存储结构</li>
+<li>二叉链表</li>
+</ol>
+<hr>
+<p>二叉树遍历</p>
+<ol>
+<li>前序遍历<blockquote>
+<p>规则是若二叉树为空，则空操作返回，否则先访问根结点，然后前序遍历左子树，再前序遍历右子树</p>
+</blockquote>
+</li>
+<li>中序遍历<blockquote>
+<p>规则是若树为空，则空操作返回，否则从根结点开始（注意并不是先访问根结点），中序遍历根结点的左子树，然后是访问根结点，最后中序遍历右子树</p>
+</blockquote>
+</li>
+<li>后序遍历<blockquote>
+<p>规则是若树为空，则空操作返回，否则从左到右先叶子后结点的方式遍历访问左右子树，最后是访问根结点</p>
+</blockquote>
+</li>
+<li>层序遍历<blockquote>
+<p>规则是若树为空，则空操作返回，否则从树的第一层，也就是根结点开始访问，从上而下逐层遍历，在同一层中，按从左到右的顺序对结点逐个访问</p>
+</blockquote>
+</li>
+</ol>
+<p>遍历算法</p>
+<ol>
+<li><p>前序遍历<br>二叉树的定义是用递归的方式，所以，实现遍历算法也可以采用递归，而且极其简洁明了。先来看看二叉树的前序遍历算法。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 二叉树的前序遍历递归算法 */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PreOrderTraverse</span><span class="params">(BiTree T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (T == NULL)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="comment">/* 显示结点数据，可以更改为其他对结点操作 */</span></span><br><span class="line">    printf(<span class="string">"%c"</span>, T-&gt;data);          </span><br><span class="line">    <span class="comment">/* 再先序遍历左子树 */</span></span><br><span class="line">    PreOrderTraverse(T-&gt;lchild);    </span><br><span class="line">    <span class="comment">/* 最后先序遍历右子树 */</span></span><br><span class="line">    PreOrderTraverse(T-&gt;rchild);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>中序遍历</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 二叉树的中序遍历递归算法 */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InOrderTraverse</span><span class="params">(BiTree T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (T == NULL)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="comment">/* 中序遍历左子树 */</span></span><br><span class="line">    InOrderTraverse(T-&gt;lchild);    </span><br><span class="line">    <span class="comment">/* 显示结点数据，可以更改为其他对结点操作 */</span></span><br><span class="line">    printf(<span class="string">"%c"</span>, T-&gt;data);         </span><br><span class="line">    <span class="comment">/* 最后中序遍历右子树 */</span></span><br><span class="line">    InOrderTraverse(T-&gt;rchild);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>换句话说，它等于是把调用左孩子的递归函数提前了。</p>
+<ol start="3">
+<li>后序遍历<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 二叉树的后序遍历递归算法 */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PostOrderTraverse</span><span class="params">(BiTree T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (T == NULL)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="comment">/* 先后序遍历左子树 */</span></span><br><span class="line">    PostOrderTraverse(T-&gt;lchild);    </span><br><span class="line">    <span class="comment">/* 再后序遍历右子树 */</span></span><br><span class="line">    PostOrderTraverse(T-&gt;rchild);    </span><br><span class="line">    <span class="comment">/* 显示结点数据，可以更改为其他对结点操作 */</span></span><br><span class="line">    printf(<span class="string">"%c"</span>, T-&gt;data);           </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>二叉树推倒遍历特性：</p>
+<ul>
+<li>已知前序遍历序列和中序遍历序列，可以唯一确定一棵二叉树</li>
+<li>已知后序遍历序列和中序遍历序列，可以唯一确定一棵二叉树</li>
+</ul>
+<p>知道前序和后序遍历是无法唯一确定二叉树，为什么呢？<br>原因也很简单，比如前序序列是ABC，后序序列是CBA。我们可以确定A一定是根结点，但接下来，我们无法知道，哪个结点是左子树，哪个是右子树。这棵树可能有如图所示的四种可能。<br><img src="https://68.media.tumblr.com/7722823defbe91333ad13a056ad9b43c/tumblr_ow5tibQel91strv3do1_1280.png" alt="多种可能"></p>
+<hr>
+<p>红黑树<br>定义</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="王洋 wechat" style="width: 200px; max-width: 100%;">
+    <div>我的微信号，欢迎交流~</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/05/linux服务器常用功能/" rel="next" title="Linux常用功能笔记">
+                <i class="fa fa-chevron-left"></i> Linux常用功能笔记
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/27/Sublime Text 3最新注册码/" rel="prev" title="Sublime Text 3最新注册码">
+                Sublime Text 3最新注册码 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/09/12/数据结构学习笔记（一）/" data-title="数据结构算法学习笔记（一）" data-url="http://blog.hackyang.cn/2017/09/12/数据结构学习笔记（一）/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://avatars1.githubusercontent.com/u/3038374?v=3&s=460" alt="王洋">
+          <p class="site-author-name" itemprop="name">王洋</p>
+          <p class="site-description motion-element" itemprop="description">我真的想让这个世界变得更好，但是他们不给我源代码……</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wy353208214" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/wangyang1989325" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据结构算法学习笔记（一）"><span class="nav-number">1.</span> <span class="nav-text">数据结构算法学习笔记（一）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一、树"><span class="nav-number">1.1.</span> <span class="nav-text">一、树</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二、二叉树"><span class="nav-number">1.2.</span> <span class="nav-text">二、二叉树</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王洋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv"> 本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kitkat"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Sb3RSVDF7jyxciT13l5qMtjL-gzGzoHsz", "sw4QAmE49mU8F9fnpmY9CdiW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

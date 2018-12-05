@@ -1,0 +1,829 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="王洋" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="系统架构的模块化与组件化一、软件研发中的问题我们都知道在做软件开发的时候，随着业务的不断扩充，功能的增加，系统会越来越复杂，代码的耦合度也会越来越高。具体表现为：   代码量膨胀，不利于维护，更不利于新功能的开发 业务开发分工不明确，开发人员要关心非业务的代码 不同业务代码耦合严重，难以多人合作，职责不分明 改代码时，可能会影响其他业务，牵一发动全身   多人一起开发时，如果代码结构、模块化的不好">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系统架构的模块化与组件化">
+<meta property="og:url" content="http://blog.hackyang.cn/2017/10/11/系统优化/index.html">
+<meta property="og:site_name" content="王洋">
+<meta property="og:description" content="系统架构的模块化与组件化一、软件研发中的问题我们都知道在做软件开发的时候，随着业务的不断扩充，功能的增加，系统会越来越复杂，代码的耦合度也会越来越高。具体表现为：   代码量膨胀，不利于维护，更不利于新功能的开发 业务开发分工不明确，开发人员要关心非业务的代码 不同业务代码耦合严重，难以多人合作，职责不分明 改代码时，可能会影响其他业务，牵一发动全身   多人一起开发时，如果代码结构、模块化的不好">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1359048-23c1ebc9ed97978f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://78.media.tumblr.com/e7b2ea18d79784cd1ec54c25d21a6d74/tumblr_oxnjzgrXvM1strv3do1_r1_1280.png">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/270478-79c6af13a24c67bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1359048-525b1823be29b051.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1359048-2784ee812efe4aef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-12-05T01:15:48.267Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="系统架构的模块化与组件化">
+<meta name="twitter:description" content="系统架构的模块化与组件化一、软件研发中的问题我们都知道在做软件开发的时候，随着业务的不断扩充，功能的增加，系统会越来越复杂，代码的耦合度也会越来越高。具体表现为：   代码量膨胀，不利于维护，更不利于新功能的开发 业务开发分工不明确，开发人员要关心非业务的代码 不同业务代码耦合严重，难以多人合作，职责不分明 改代码时，可能会影响其他业务，牵一发动全身   多人一起开发时，如果代码结构、模块化的不好">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1359048-23c1ebc9ed97978f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6321919226709804000,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://blog.hackyang.cn/2017/10/11/系统优化/">
+
+  <title> 系统架构的模块化与组件化 | 王洋 </title>
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">王洋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Kitkat</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                系统架构的模块化与组件化
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-10-11T20:34:03+08:00" content="2017-10-11">
+              2017-10-11
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/10/11/系统优化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/11/系统优化/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/10/11/系统优化/" class="leancloud_visitors" data-flag-title="系统架构的模块化与组件化">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="系统架构的模块化与组件化"><a href="#系统架构的模块化与组件化" class="headerlink" title="系统架构的模块化与组件化"></a>系统架构的模块化与组件化</h4><h5 id="一、软件研发中的问题"><a href="#一、软件研发中的问题" class="headerlink" title="一、软件研发中的问题"></a>一、软件研发中的问题</h5><p>我们都知道在做软件开发的时候，随着业务的不断扩充，功能的增加，系统会越来越复杂，代码的耦合度也会越来越高。<br>具体表现为：</p>
+<blockquote>
+<ul>
+<li>代码量膨胀，不利于维护，更不利于新功能的开发</li>
+<li>业务开发分工不明确，开发人员要关心非业务的代码</li>
+<li>不同业务代码耦合严重，难以多人合作，职责不分明</li>
+<li>改代码时，可能会影响其他业务，牵一发动全身</li>
+</ul>
+</blockquote>
+<p>多人一起开发时，如果代码结构、模块化的不好，就很难对不同业务划分出分界线，难以明确各自的职责，牵一发动全身，出了问题更是容易相互扯皮（这个时候只能说一句“怪我咯o(╯□╰)o”），更不用提合并代码时的冲突了。</p>
+<p>因此为了尽可能的减少规避这些问题，人们发明了不同开发框架，如MVP、MVC（TP框架）、MVVM等，这些都是为了降低研发成本。这些只是规范了代码，理论上大家严格遵守框架规范是可以做出单个可维护性较高的系统，但一个系统一定会越来越庞大，功能模块也会越来越多，单纯的依靠软件架构规范已经没办法避免以上这些问题了。<br>后来就诞生了模块化、组件化、微服务等一些拆分方案， 目的都是为了解耦代码，提高代码的复用率和容错率，以及提升研发效率。<br>具体优势如下：</p>
+<blockquote>
+<ul>
+<li>架构更清晰，解耦</li>
+<li>加快编译速度</li>
+<li>业务分工明确，开发人员仅专注与自己的业务</li>
+<li>提高开发效率</li>
+<li>组件、业务独立更新版本，可回滚，持续集成<a id="more"></a>
+</li>
+</ul>
+</blockquote>
+<h5 id="二、两者关系"><a href="#二、两者关系" class="headerlink" title="二、两者关系"></a>二、两者关系</h5><p>从上面的阐述可以得出，一个工程，由多个模块组成，每个模块由多个组件构成。但很多时候，两者界限还是相当模糊。例如“日志组件”称为“日志模块”，也没有违和感。</p>
+<blockquote>
+<ul>
+<li>组件从业务角度上不能继续拆分，可替换，可复用<br>= 模块的定义比较笼统，可以是一个Business业务，可以是技术架构中一个业务，也可以是几个组件构成的小功能</li>
+</ul>
+</blockquote>
+<p>无论是组件化还是模块化，目标都是把臃肿的工程，拆分为更小的部分，解耦各种复杂的逻辑，便于代码管理。</p>
+<h5 id="三、模块化与组件化"><a href="#三、模块化与组件化" class="headerlink" title="三、模块化与组件化"></a>三、模块化与组件化</h5><ol>
+<li><h6 id="什么是模块化？"><a href="#什么是模块化？" class="headerlink" title="什么是模块化？"></a>什么是模块化？</h6>模块翻译为“Module”，字面意思。模块由多个组件构成，它可以实现一个独立的功能，甚至业务。模块化的目的在于将一个程序按照其功能做拆分，分成相互独立的模块，以便于每个模块只包含与其功能相关的内容，模块之间通过接口（API或者RPC）调用。<br><img src="http://upload-images.jianshu.io/upload_images/1359048-23c1ebc9ed97978f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="模块"><br>举例：“展翅网”的大模块有，<strong>首页-实习-兼职、技能培训、测评、吾聊职场</strong>都可以称为一个大模块；当然这样的拆分还不够精细，大家普遍称之为项目会更合适，为了更细分使模块复用率更高，我们必须继续拆分，使服务层和上层业务独立分开，这样我们才能更好的做系统模块化。</li>
+</ol>
+<p><img src="https://78.media.tumblr.com/e7b2ea18d79784cd1ec54c25d21a6d74/tumblr_oxnjzgrXvM1strv3do1_r1_1280.png" alt=""><br>模块细化还要有一些基础模块，如下图<br><img src="http://upload-images.jianshu.io/upload_images/270478-79c6af13a24c67bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<ol start="2">
+<li><h6 id="什么是组件化？"><a href="#什么是组件化？" class="headerlink" title="什么是组件化？"></a>什么是组件化？</h6><p>组件，应该翻译为“Component”，意思是组件、部件、元件。在电子电路中，电子元件是电子电路中的基本元素。在App工程上，组件是构成业务或者功能模块的基本单位。原则上，组件与组件之间互不依赖。<br><img src="http://upload-images.jianshu.io/upload_images/1359048-525b1823be29b051.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="组件"><br>例如，图片上传功能，应该叫“图片上传组件”，而不是“图片上传模块”。因为图片上传从功能、业务上，已经不能往下拆了。图片上传可能使用七牛sdk，或者又拍云sdk。无论图片上传组件用七牛sdk，还是又拍云sdk，都不会影响这个组件的功能，因此组件具有可替换性；同时，图片上传组件可以被多个业务使用，因此组件具有可复用性。由于sdk只是技术细节，它跟业务并没有关系。在业务架构图上，也不会出现“xx sdk”，因此我们说图片上传组件不能拆分了。<br><strong>美团点评的前端组件框架</strong><br><img src="http://upload-images.jianshu.io/upload_images/1359048-2784ee812efe4aef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>从上图可以看出，多个组件构成一个模块，当模块相当于业务时，就是说该业务由多个组件组合而成。</p>
+</li>
+<li><h6 id="组件化的优势"><a href="#组件化的优势" class="headerlink" title="组件化的优势"></a>组件化的优势</h6><p><strong>1.可扩展性</strong></p>
+<blockquote>
+<p>这里主要是讲前端为主，其实后端服务也是一样，比如爬虫模块的下载组件，这里不做具体的阐述</p>
+</blockquote>
+</li>
+</ol>
+<p>通过组件之间的合理组合搭配，可以构建出满足业务需求的新组件。<br>这一点很好理解，举个例子，我们有一个基础的树形组件<code>tree</code>和<code>tree-node</code>，现在来了一个业务需求，需要开发一个人员/机构的选择器，那么我们就可以很方便的基于我们的<code>tree</code>组件进行扩展，创建一个新的组件<code>xx-selector</code><br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;list :data=<span class="string">"selectedData"</span> /&gt; <span class="comment">// 已选列表</span></span><br><span class="line">  &lt;/selected&gt;</span><br><span class="line">  &lt;tree :data=<span class="string">"treeData"</span>  onSelect=<span class="string">"onSelect"</span>&gt;</span><br><span class="line">    &lt;template slot=<span class="string">"treeNode"</span>&gt;</span><br><span class="line">      ...custom ui here</span><br><span class="line">    &lt;/template&gt;</span><br><span class="line">  &lt;/tree&gt; </span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="keyword">import</span> tree from ./tree.vue</span><br><span class="line">  <span class="keyword">import</span> list from ./list.vue</span><br><span class="line">  <span class="keyword">module</span>.<span class="keyword">exports</span> = &#123;</span><br><span class="line">    data:&#123;</span><br><span class="line">      treeData:[],  </span><br><span class="line">      selectedData:[]</span><br><span class="line">    &#125;,</span><br><span class="line">    created:function()&#123;</span><br><span class="line">      <span class="keyword">this</span>.init()</span><br><span class="line">    &#125;</span><br><span class="line">    methods:&#123;</span><br><span class="line">      onSelect:function(selected)&#123;</span><br><span class="line">        <span class="keyword">this</span>.selectedData = selected</span><br><span class="line">        <span class="keyword">this</span>.$emit(<span class="string">'onSelectedChange'</span>,selected)</span><br><span class="line">      &#125;,</span><br><span class="line">      initData:function()&#123;</span><br><span class="line">        <span class="comment">// ajax请求获取人员信息</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p><strong>2.可复用</strong><br>刚才的<code>xx-selector</code>组件就复用到了基础的<code>tree</code>组件和<code>tree-node</code>组件。同样的道理，我们开发的<code>xx-selector</code>人员选择器组件，可以在任何有同样需求的地方重复使用，可以成为一个专属你们开发团队的一个基础组件，减少了开发量。</p>
+<p><strong>3.高内聚/低耦合</strong><br>在我们使用<code>xx-selector</code>组件时，我们无需关心该组件内部的实现细节，我们只需要监听它暴露出来的<code>onSelectedChanged(selectedList)</code>事件，这个事件在选中人员发生改变时触发，把已选人员列表<code>selectedList</code>传递我们——我们使用选择器，所该关心就只是已选列表而已。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;xx-selector onSelectedChanged=<span class="string">"selectorChanged"</span>&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="keyword">import</span> xx-selector from ./xx-selector.vue</span><br><span class="line">  <span class="keyword">module</span>.<span class="keyword">exports</span> = &#123;</span><br><span class="line">    data:&#123; &#125;,</span><br><span class="line">    methods:&#123;</span><br><span class="line">      selectorChanged:function(selected)&#123;</span><br><span class="line">        <span class="comment">// 处理已选</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这样就实现了</p>
+<ul>
+<li>组件内部高度内聚——只给外部提供功能，对外部的修改关闭</li>
+<li>组件之间低耦合——组件与组件只需要监听事件、触发事件，子组件不依赖与父组件</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="王洋 wechat" style="width: 200px; max-width: 100%;">
+    <div>我的微信号，欢迎交流~</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/27/Sublime Text 3最新注册码/" rel="next" title="Sublime Text 3最新注册码">
+                <i class="fa fa-chevron-left"></i> Sublime Text 3最新注册码
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/01/Zookeeper学习/" rel="prev" title="Zookeeper笔记">
+                Zookeeper笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/10/11/系统优化/" data-title="系统架构的模块化与组件化" data-url="http://blog.hackyang.cn/2017/10/11/系统优化/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://avatars1.githubusercontent.com/u/3038374?v=3&s=460" alt="王洋">
+          <p class="site-author-name" itemprop="name">王洋</p>
+          <p class="site-description motion-element" itemprop="description">我真的想让这个世界变得更好，但是他们不给我源代码……</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wy353208214" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/wangyang1989325" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#系统架构的模块化与组件化"><span class="nav-number">1.</span> <span class="nav-text">系统架构的模块化与组件化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一、软件研发中的问题"><span class="nav-number">1.1.</span> <span class="nav-text">一、软件研发中的问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二、两者关系"><span class="nav-number">1.2.</span> <span class="nav-text">二、两者关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#三、模块化与组件化"><span class="nav-number">1.3.</span> <span class="nav-text">三、模块化与组件化</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#什么是模块化？"><span class="nav-number">1.3.1.</span> <span class="nav-text">什么是模块化？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#什么是组件化？"><span class="nav-number">1.3.2.</span> <span class="nav-text">什么是组件化？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#组件化的优势"><span class="nav-number">1.3.3.</span> <span class="nav-text">组件化的优势</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王洋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv"> 本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kitkat"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Sb3RSVDF7jyxciT13l5qMtjL-gzGzoHsz", "sw4QAmE49mU8F9fnpmY9CdiW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
